@@ -11,3 +11,8 @@ The Python script itself takes a while to read the Excel sheet because of the hu
 Future areas of improvement:
 1. Filtering out the data in the pre-processing stage to reduce the size of the dataset (perhaps filtering out LW's before 2010). This would require separate VBA / Python scripts.
 2. Converting the Excel worksheet to CSV format, to improve the time the Python script takes to read.
+
+
+Notes:
+- cerberusCheck.py developed to **filter the data extracted from Cerberus**
+- 
