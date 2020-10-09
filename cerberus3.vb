@@ -1,8 +1,11 @@
 Sub cerberus3()
     
-    ''' This is the finalized code, with CSV export functionality, to use for the Weekly Cerberus Check
-    ''' This code is better than the previous code as it is less verbose & emphasises extensability & abstraction
+    ''' Finalized code to create CSV files of each segments' DDM_FINAL.
+    ''' Each segments' CSV is stored in one location (Weekly Cerberus Check (Automated) folder in Haikal's folder).
+    ''' The CerberusCheck Excel Workbook containing all segments' DDM_FINAL
+    ''' is not being altered in this version of the code.
 
+    
     Application.EnableEvents = False
     Application.ScreenUpdating = False
     Application.DisplayAlerts = False
@@ -14,52 +17,40 @@ Sub cerberus3()
     
     
 ''  WUXI CC
-    WUXI_CC = ""
+    WUXI_CC = "\\wproj501\BE_CLUSTER_PTE\04_Data_Management\11B_DDM_Reporting\WUXICC DDM\Masterfile.xlsx"
     WUXI_CC_WS = "WUXI CC_ASSESSED"
 ''  WUXI DS
-    WUXI_DS = ""
+    WUXI_DS = "\\wproj501\BE_CLUSTER_PTE\04_Data_Management\11B_DDM_Reporting\WUXIDS DDM\Masterfile.xlsx"
     WUXI_DS_WS = "WUXI DS_ASSESSED"
 ''  TS
-    TS = ""
+    TS = "\\wproj501\BE_CLUSTER_PTE\04_Data_Management\11B_DDM_Reporting\TS DDM\Masterfile.xlsx"
     TS_WS = "SIN TS_ASSESSED"
 ''  SENS
-    SENS = ""
+    SENS = "\\wproj501\BE_CLUSTER_PTE\04_Data_Management\11B_DDM_Reporting\SENS DDM\Masterfile.xlsx"
     SENS_WS = "MAL SCC_ASSESSED"
 ''  PLT
-    PLT = ""
+    PLT = "\\wproj501\BE_CLUSTER_PTE\04_Data_Management\11B_DDM_Reporting\PLT DDM\Masterfile.xlsx"
     PLT_WS = "MAL PLT_ASSESSED"
 ''  DSMAL
-    DSMAL = ""
+    DSMAL = "\\wproj501\BE_CLUSTER_PTE\04_Data_Management\11B_DDM_Reporting\DSMAL DDM\Masterfile.xlsx"
     DSMAL_WS = "MAL DS_ASSESSED"
 ''  POB
-    POB = ""
+    POB = "\\wproj501\BE_CLUSTER_PTE\04_Data_Management\11B_DDM_Reporting\POB DDM\Masterfile.xlsx"
     POB_WS = "BATAM POB_ASSESSED"
     
     
     ''' The path of the Excel Workbook containing just the ASSESSED Worksheets of the different segments
     ''' can be referred to as "MyMaster"
-
+    'Path_Mymaster = "\\wproj501\BE_CLUSTER_PTE\04_Data_Management\09_Intern_Projects\Haikal Yusuf\PersonalProjects\CerberusCheck\CerberusCheck.xlsx"
     Path_Mymaster = "C:\Users\MohamadYusuf\Desktop\Haikal\Personal Projects\CerberusCheck.xlsx"
     
+    
     ''' Declaration & assignment of different segments' worksheet names & paths
-        Dim openWB, openMainWB As Workbook
+        Dim openWB As Workbook
         Dim Paths As Variant
             Paths = Array(WUXI_CC, WUXI_DS, TS, SENS, PLT, DSMAL, POB)
         Dim worksheets As Variant
             worksheets = Array(WUXI_CC_WS, WUXI_DS_WS, TS_WS, SENS_WS, PLT_WS, DSMAL_WS, POB_WS)
-    
-    
-    ''' Open the MyMaster Excel workbook & delete all existing Worksheets
-        Set openMainWB = Workbooks.Open(Path_Mymaster)
-        
-        openMainWB.Activate
-        With ActiveSheet
-            For Each worksheet In openMainWB.worksheets
-                If worksheet.Name <> "Sheet1" Then
-                   worksheet.Delete
-                End If
-            Next
-        End With
     
     
     ''' Compile all segments' worksheets into 1 Workbook
@@ -71,9 +62,8 @@ Sub cerberus3()
             
             For Each worksheet In openWB.worksheets
                 If worksheet.Name = "DDM_FINAL" Then
-                    'worksheet.Copy after:=openMainWB.Sheets(openMainWB.Sheets.Count)
-                    'CSV_Export (Split(worksheets(i), "_")(0))
-                    MyPATH = ActiveWorkbook.Path    '''''''''' TO CHANGE if you don't want the csv files to be saved to the respective segment's folders
+''                    MyPATH = ActiveWorkbook.Path    '''''''''' TO CHANGE if you don't want the csv files to be saved to the respective segment's folders
+                    MyPATH = "\\sinsdn38.ap.infineon.com\BE_CLUSTER_PTE\04_Data_Management\09_Intern_Projects\Haikal Yusuf\Weekly Cerberus Check (Automated)"
                     FileNAME = "" & Split(worksheets(i), "_")(0)
                     FileNAME = FileNAME & ".csv" ' ADD CSV EXTENSION
                     Application.DisplayAlerts = False ' REMOVE DISPLAY MESSAGE: PREVIOUS FILE WILL BE ERASED
@@ -81,22 +71,8 @@ Sub cerberus3()
                 End If
             Next worksheet
             openWB.Close SaveChanges:=False
-
-            
-            
-            
-''            'change sheets name
-''            openMainWB.Activate
-''            With ActiveSheet
-''                ActiveWorkbook.Sheets("DDM_FINAL").Name = worksheets(i)
-''                'CSV_Export (Split(worksheets(i), "_")(0))
-''            End With
-''            openMainWB.Activate
-''            CSV_Export (Split(worksheets(i), "_")(0))
-''            'openMainWB.Save
             
         Next i
-
     
     Application.EnableEvents = True
     Application.ScreenUpdating = True
