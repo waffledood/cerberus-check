@@ -17,25 +17,25 @@ Sub cerberus3()
     
     
 ''  WUXI CC
-    WUXI_CC = "\\wproj501\BE_CLUSTER_PTE\04_Data_Management\11B_DDM_Reporting\WUXICC DDM\Masterfile.xlsx"
+    WUXI_CC = ""
     WUXI_CC_WS = "WUXI CC_ASSESSED"
 ''  WUXI DS
-    WUXI_DS = "\\wproj501\BE_CLUSTER_PTE\04_Data_Management\11B_DDM_Reporting\WUXIDS DDM\Masterfile.xlsx"
+    WUXI_DS = ""
     WUXI_DS_WS = "WUXI DS_ASSESSED"
 ''  TS
-    TS = "\\wproj501\BE_CLUSTER_PTE\04_Data_Management\11B_DDM_Reporting\TS DDM\Masterfile.xlsx"
+    TS = ""
     TS_WS = "SIN TS_ASSESSED"
 ''  SENS
-    SENS = "\\wproj501\BE_CLUSTER_PTE\04_Data_Management\11B_DDM_Reporting\SENS DDM\Masterfile.xlsx"
+    SENS = ""
     SENS_WS = "MAL SCC_ASSESSED"
 ''  PLT
-    PLT = "\\wproj501\BE_CLUSTER_PTE\04_Data_Management\11B_DDM_Reporting\PLT DDM\Masterfile.xlsx"
+    PLT = ""
     PLT_WS = "MAL PLT_ASSESSED"
 ''  DSMAL
-    DSMAL = "\\wproj501\BE_CLUSTER_PTE\04_Data_Management\11B_DDM_Reporting\DSMAL DDM\Masterfile.xlsx"
+    DSMAL = ""
     DSMAL_WS = "MAL DS_ASSESSED"
 ''  POB
-    POB = "\\wproj501\BE_CLUSTER_PTE\04_Data_Management\11B_DDM_Reporting\POB DDM\Masterfile.xlsx"
+    POB = ""
     POB_WS = "BATAM POB_ASSESSED"
     
     
