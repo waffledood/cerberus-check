@@ -97,7 +97,7 @@ def segmentStatCheck(df, logweek, segment_tuple=None):
     '''
     for segment in segment_tuple:
         print(statCheck(df, logweek, segment))
-     
+
 
 
 
