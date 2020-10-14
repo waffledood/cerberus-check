@@ -15,8 +15,8 @@ Future areas of improvement:
 
 
 Decided course of action:
-1. Extract each DDM_FINAL Worksheet from each Segment's Masterfile Workbook as a CSV file.
-2. Calculate the LOH & TTL count from each Segment's CSV file.
+1. Extract each DDM_FINAL Worksheet from each Segment's Masterfile Workbook as a CSV file (csv_export.vb).
+2. Calculate the LOH & TTL count from each Segment's CSV file (cerberus_v2.py).
 
 Notes:
 - cerberusCheck.py developed to **filter the data extracted from Cerberus**
