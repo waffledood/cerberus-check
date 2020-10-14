@@ -9,9 +9,14 @@ The Python script itself takes a while to read the Excel sheet because of the hu
 
 
 Future areas of improvement:
-1. Filtering out the data in the pre-processing stage to reduce the size of the dataset (perhaps filtering out LW's before 2010). This would require separate VBA / Python scripts.
-2. Converting the Excel worksheet to CSV format, to improve the time the Python script takes to read.
+1. ~~Filtering out the data in the pre-processing stage to reduce the size of the dataset (perhaps filtering out LW's before 2010). This would require separate VBA / Python scripts.~~
+2. ~~Converting the Excel worksheet to CSV format, to improve the time the Python script takes to read.~~
+3. Extra filters for DS MAL & SIN TS segments
 
+
+Decided course of action:
+1. Extract each DDM_FINAL Worksheet from each Segment's Masterfile Workbook as a CSV file.
+2. Calculate the LOH & TTL count from each Segment's CSV file.
 
 Notes:
 - cerberusCheck.py developed to **filter the data extracted from Cerberus**
