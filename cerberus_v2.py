@@ -24,6 +24,10 @@ path_wuxids = r"\\sinsdn38.ap.infineon.com\BE_CLUSTER_PTE\04_Data_Management\09_
 df_tuple = [df_dsmal, df_plt, df_sens, df_ts, df_wuxicc, df_wuxids, df_pob]
 path_tuple = [path_dsmal, path_plt, path_sens, path_ts, path_wuxicc, path_wuxids, path_pob]
 
+# Logweek
+logweek = input("Which logweek do you want to query? ")
+logweek = int(logweek)
+
 
 # main loop to go through the tuples of paths & dataframes & perform LOH & TTL count
 for df, path in zip(df_tuple, path_tuple):
@@ -35,15 +39,24 @@ for df, path in zip(df_tuple, path_tuple):
         ttl_count = 0
 
         # Logweek
-        logweek = 2101
+        #logweek = 2102
+        '''
+        logweek = input("Which logweek do you want to query?")
+        logweek = int(logweek)
+        '''
 
         # segment's name
         segment_list = path.split("\\")
         segment = segment_list[len(segment_list)-1].split(".")[0]
 
         # checking for LOH - Lot On Hold
-        df_loh = df[(df['LW'] == logweek) & (df['ALF_DISPOSITION'] == 'ON-HOLD')]
-        loh_count = len(df_loh.index)
+        if "MAL DS" in segment:
+            print("do something")
+            df_loh = df[(df['LW'] == logweek) & (df['ALF_DISPOSITION'] == 'ON-HOLD') & (df['PTE/UPE'] != 'UPE')]
+            loh_count = len(df_loh.index)
+        else:
+            df_loh = df[(df['LW'] == logweek) & (df['ALF_DISPOSITION'] == 'ON-HOLD')]
+            loh_count = len(df_loh.index)
 
         # checking for TTL - Total Lot Count
         df_ttl = df[(df['LW'] == logweek) & (df['ALF_DISPOSITION'] == 'AUTO RELEASE')]
@@ -64,7 +77,7 @@ INITIAL FINDINGS:
     TS difference (between Tableau's Excel source & Tableau chart)
     - 986/6300 VS 829/6300
 
-    DSMAL difference
+    DSMAL difference (RESOLVED) --> difference was because of the PTE/UPE filter
     - 463 / 1323 VS 219/1323
 
 1. TS & DSMAL differ in values between Tableau & this Python code (which looks at the underlying excel data for Tableau) ((so by right shouldn't be diff...))
