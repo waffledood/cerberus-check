@@ -4,6 +4,8 @@ import numpy as np
 '''
 Workflow outline of Weekly Cerberus Check
 
+-> This Python program covers points 1, 2 & 3
+
 1) start with data retrieval from Cerberus (for LOH, TTL)
 -> can't be automated because there doesn't seem to be an API
 
@@ -12,10 +14,9 @@ Workflow outline of Weekly Cerberus Check
 -> filter by Hold Comments 
 
 3) count of lots in each segment's LOH & TTL
--> total number of rows in 
+-> total number of rows in each Worksheet 
 
 4) check each segment's LOH/TTL (Cerberus) against LOH/TTL (Tableau/Excel)
-
 '''
 
 filename = r"\\sinsdn38.ap.infineon.com\BE_CLUSTER_PTE\04_Data_Management\09_Intern_Projects\Haikal Yusuf\Weekly LRR Reports\LW2103 Compile.xlsx"
@@ -56,7 +57,9 @@ For 'Hold Comments':
 dsmal_list = ['1WAVIS','2DVIS','2TPVIS','3BOVIS','INTAPE','MBIN1','MISDEV','N.A.','OUTPAD','PADCOV','PADEDG','PADIMM','PNP','PURGE','TWBOTT','TWTOP','VISION_IN_TAPE']
 
 full_table = full_table[ ['Owner', 'Hold Comments', 'sheet'] ]
+# filter for 'Owner' first
 full_table = full_table[ full_table['Owner'].isin(['PROD', 'RISK', 'RISM', 'RWIC', 'SFLA']) ]
+# filter for 'Hold Comments'
 full_table = full_table[ full_table['Hold Comments'].isin(['Configure', 'Lot-Error']) | full_table['Hold Comments'].str.contains('Parameter') 
                          # retains WUXI DS entries
                          | full_table['sheet'].str.contains('WUXI DS') 
@@ -70,9 +73,17 @@ full_table = full_table[ full_table['Hold Comments'].isin(['Configure', 'Lot-Err
 
 # counting of LOH & TTL
 '''
+tuples to store each segment's values: LOH, TTL, LRR
 segment_loh = [ dsmal_loh, plt_loh, sens_loh, ts_loh, wuxicc_loh, wuxids_loh, pob_loh ]
 segment_ttl = [ dsmal_ttl, plt_ttl, sens_ttl, ts_ttl, wuxicc_ttl, wuxids_ttl, pob_ttl ]
+segment_LRR = [ dsmal_LRR, plt_LRR, sens_LRR, ts_LRR, wuxicc_LRR, wuxids_LRR, pob_LRR ]
+
+
+for loh, ttl, lrr in zip(segment_loh, segment_ttl, segment_LRR):
+    # https://www.programiz.com/python-programming/methods/built-in/zip
+
 '''
+
 full_table['new'] = full_table['Hold Comments'].str.split(":")
 #full_table['a new'] = full_table[ full_table['new'].map(len) ]
 #full_table['a new'] = full_table['new'].apply(lambda x:x[0])
@@ -82,6 +93,10 @@ print( full_table.head() )
 print( full_table.columns )
 
 print( full_table.shape )
+
+#print( "WUXI DS:", len( full_table[ full_table['sheet'].str.contains('WUXI DS') ].index )  )
+print( "WUXI DS LOH:", len( full_table[ full_table['sheet'].str.contains('WUXI DS') & full_table['sheet'].str.contains('LOH') ].index )  )
+print( "WUXI DS TTL:", len( full_table[ full_table['sheet'].str.contains('WUXI DS') & full_table['sheet'].str.contains('DWHView') ].index )  )
 
 #print( full_table['Hold Comments'].str )
 
