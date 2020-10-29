@@ -10,7 +10,7 @@ The Python script itself takes a while to read the Excel sheet because of the hu
 Process:
 
 1. Data extracted from Cerberus is manually filtered (Owner, then Hold Comments). The data for LOH & TTL lots for each segment are separated into individual Excel Worksheets. So 2 (LOH, TTL) x 7 (segments) = 14 worksheets. The count of LOH & TTL lots (number of rows) is then extracted from each worksheet.
-- WorkflowOutline.py
+- WorkflowOutline.py (will rename this later lol)
 
 2. Count for LOH & TTL lots is extracted from the underlying database of the Tableau charts.
 - csv_export.vb
