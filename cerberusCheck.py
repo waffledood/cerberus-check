@@ -54,13 +54,14 @@ For 'Hold Comments':
     WUXI CC retains DDM comments, excludes all http comments
 '''
 
+# Parameter violations that DSMAL lots have to adhere to 
 dsmal_list = ['1WAVIS','2DVIS','2TPVIS','3BOVIS','INTAPE','MBIN1','MISDEV','N.A.','OUTPAD','PADCOV','PADEDG','PADIMM','PNP','PURGE','TWBOTT','TWTOP','VISION_IN_TAPE']
 
+# preserves these columns 
 full_table = full_table[ ['Owner', 'Hold Comments', 'sheet'] ]
+
 # filter for 'Owner' first (TTL count)
 full_table = full_table[ full_table['Owner'].isin(['PROD', 'RISK', 'RISM', 'RWIC', 'SFLA']) ]
-
-# -> the second filter below will remove all TTL lots because the columns don't exist in TTL lots
 
 # filter for 'Hold Comments' (LOH count)
 full_table = full_table[ full_table['Hold Comments'].isin(['Configure', 'Lot-Error']) | full_table['Hold Comments'].str.contains('Parameter') 
@@ -76,6 +77,7 @@ full_table = full_table[ full_table['Hold Comments'].isin(['Configure', 'Lot-Err
 
                          # retains TTL lots
                          | ( full_table['sheet'].str.contains('DWHView') )
+
                        ]
 
 #print('2. unique values in sheet', full_table.sheet.unique())
@@ -95,15 +97,23 @@ for loh, ttl, lrr, name in zip(segment_loh, segment_ttl, segment_LRR, segment_tu
 
     # https://www.programiz.com/python-programming/methods/built-in/zip
     if 'DSMAL' in name:
+        # filtering for DSMAL above not completed yet
         continue
+    
     if 'SENS' in name:
         # need to take into consideration for SENS, since the data for TTL is split into 2 worksheets
-        continue
-    else:
-        loh = len( full_table[ full_table['sheet'].str.contains(name) & full_table['sheet'].str.contains('LOH') ].index )
+        ttl1 = len( full_table[ full_table['sheet'].str.contains(name) & full_table['sheet'].str.contains('1') & full_table['sheet'].str.contains('DWHView') ].index )
+        ttl2 = len( full_table[ full_table['sheet'].str.contains(name) & full_table['sheet'].str.contains('2') & full_table['sheet'].str.contains('DWHView') ].index )
+        ttl = ttl1 + ttl2
+        
+    else:      
         ttl = len( full_table[ full_table['sheet'].str.contains(name) & full_table['sheet'].str.contains('DWHView') ].index )
-        lrr = round(loh / ttl, 5)
-        print(f'{name}\'s stats are {loh}, {ttl}, {lrr*100}%')
+
+
+    loh = len( full_table[ full_table['sheet'].str.contains(name) & full_table['sheet'].str.contains('LOH') ].index )
+    lrr = round(loh / ttl, 5)
+    print(f'{name}\'s stats are {loh}, {ttl}, {lrr*100}%')
+
 
 segment_stats = zip(segment_tuple, segment_loh, segment_ttl, segment_LRR)
 segment_stats_list = list(segment_stats)
