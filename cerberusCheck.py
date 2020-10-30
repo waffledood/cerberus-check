@@ -60,6 +60,9 @@ dsmal_list = ['1WAVIS','2DVIS','2TPVIS','3BOVIS','INTAPE','MBIN1','MISDEV','N.A.
 # preserves these columns 
 full_table = full_table[ ['Owner', 'Hold Comments', 'sheet'] ]
 
+# strip "!" from "Parameter ..." values in 'Hold Comments column (data cleaning in preparation for DSMAL)
+full_table['Hold Comments'] = full_table['Hold Comments'].str.strip("!")
+
 # filter for 'Owner' first (TTL count)
 full_table = full_table[ full_table['Owner'].isin(['PROD', 'RISK', 'RISM', 'RWIC', 'SFLA']) ]
 
@@ -78,11 +81,11 @@ full_table = full_table[ full_table['Hold Comments'].isin(['Configure', 'Lot-Err
                          # retains TTL lots
                          | ( full_table['sheet'].str.contains('DWHView') )
 
-                       ]
+                        ]
 
 #print('2. unique values in sheet', full_table.sheet.unique())
 
-
+'''
 # tuples to store each segment's values: LOH, TTL, LRR
 dsmal_loh, plt_loh, sens_loh, ts_loh, wuxicc_loh, wuxids_loh, pob_loh = "", "", "", "", "", "", ""
 dsmal_ttl, plt_ttl, sens_ttl, ts_ttl, wuxicc_ttl, wuxids_ttl, pob_ttl = "", "", "", "", "", "", ""
@@ -99,7 +102,7 @@ for loh, ttl, lrr, name in zip(segment_loh, segment_ttl, segment_LRR, segment_tu
     if 'DSMAL' in name:
         # filtering for DSMAL above not completed yet
         continue
-    
+
     if 'SENS' in name:
         # need to take into consideration for SENS, since the data for TTL is split into 2 worksheets
         ttl1 = len( full_table[ full_table['sheet'].str.contains(name) & full_table['sheet'].str.contains('1') & full_table['sheet'].str.contains('DWHView') ].index )
@@ -117,23 +120,42 @@ for loh, ttl, lrr, name in zip(segment_loh, segment_ttl, segment_LRR, segment_tu
 
 segment_stats = zip(segment_tuple, segment_loh, segment_ttl, segment_LRR)
 segment_stats_list = list(segment_stats)
-
-
-
-full_table['new'] = full_table['Hold Comments'].str.split(":")
-#full_table['a new'] = full_table[ full_table['new'].map(len) ]
-#full_table['a new'] = full_table['new'].apply(lambda x:x[0])
 '''
 
+#full_table["Hold Comments"] = full_table["Hold Comments"].astype(str)
+full_table['new'] = full_table['Hold Comments'].str.split(":")
+
+'''
+dsmal ttl lots '''
+#dsmal_ttl = full_table[ full_table['sheet'].str.contains('DSMAL') & full_table['sheet'].str.contains('DWHView') ]
+dsmal_df = full_table.copy(deep=True)
+print( dsmal_df.head() )
+
+dsmal_df = dsmal_df[ dsmal_df['sheet'].str.contains('DSMAL') & dsmal_df['sheet'].str.contains('LOH') ]
+dsmal_df['new 2'] = [ x[1:] for x in dsmal_df['new'] if len(x) > 1 or x in ['Configure', 'Lot-Error'] ]
+
+print( dsmal_df.head(30) )
+
+#[ x for x in full_table['new'] if len(x) > 1 ]
+'''
+for x in full_table['new'] if len(x) > 1:
+    full_table.extend( [x] )
+
+print('data types are', full_table.dtypes)
+
+print( dsmal_ttl.head() )
+dsmal_df['new 2'] = [ x for x in dsmal_df['Hold Comments'] if len(x) > 1 ]
+'''
+
+#full_table['a new'] = full_table[ full_table['new'].map(len) ]
+#full_table['a new'] = full_table['new'].apply(lambda x:x[0])
+
+'''
 print( full_table.head() )
 
 print( full_table.columns )
 
 print( full_table.shape )
-
-#print( "WUXI DS:", len( full_table[ full_table['sheet'].str.contains('WUXI DS') ].index )  )
-print( "WUXI DS LOH:", len( full_table[ full_table['sheet'].str.contains('WUXI DS') & full_table['sheet'].str.contains('LOH') ].index )  )
-print( "WUXI DS TTL:", len( full_table[ full_table['sheet'].str.contains('WUXI DS') & full_table['sheet'].str.contains('DWHView') ].index )  )
 '''
 
 #print( full_table['Hold Comments'].str )
