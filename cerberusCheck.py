@@ -34,8 +34,6 @@ sheets_dict = pd.read_excel(filename, sheet_name=None, skiprows=8)
 
 full_table = pd.DataFrame()
 
-segment_tuple = ('BATAM POB', 'MAL DS', 'MAL PLT', 'MAL SCC', 'WUXI DS', 'SIN TS', 'WUXI CC')
-
 
 # name is a key, sheet is a value (key-value pair)
 # name is a String, sheet is a DataFrame 
@@ -47,6 +45,8 @@ for name, sheet in sheets_dict.items():
     #sheet = sheet.rename(columns=lambda x: x.split('_')[0]) can't split because of column ALF_DISPOSITION
     full_table = full_table.append(sheet)
 
+#print('1. unique values in sheet', full_table.sheet.unique())
+
 # filtering of data in LOH, TTL
 '''
 For 'Hold Comments':
@@ -57,36 +57,63 @@ For 'Hold Comments':
 dsmal_list = ['1WAVIS','2DVIS','2TPVIS','3BOVIS','INTAPE','MBIN1','MISDEV','N.A.','OUTPAD','PADCOV','PADEDG','PADIMM','PNP','PURGE','TWBOTT','TWTOP','VISION_IN_TAPE']
 
 full_table = full_table[ ['Owner', 'Hold Comments', 'sheet'] ]
-# filter for 'Owner' first
+# filter for 'Owner' first (TTL count)
 full_table = full_table[ full_table['Owner'].isin(['PROD', 'RISK', 'RISM', 'RWIC', 'SFLA']) ]
-# filter for 'Hold Comments'
+
+# -> the second filter below will remove all TTL lots because the columns don't exist in TTL lots
+
+# filter for 'Hold Comments' (LOH count)
 full_table = full_table[ full_table['Hold Comments'].isin(['Configure', 'Lot-Error']) | full_table['Hold Comments'].str.contains('Parameter') 
+
                          # retains WUXI DS entries
                          | full_table['sheet'].str.contains('WUXI DS') 
+
                          # retains WUXI CC entries 
                          | ( full_table['sheet'].str.contains('WUXI CC') & full_table['Hold Comments'].str.contains('DDM') ) 
-                         # retains DSMAL entries 
-                         # TODO
+
+                         # TODO retains DSMAL entries 
                          #| ( full_table['sheet'].str.contains('DSMAL') & set(full_table['Hold Comments'].str.split(":")[1].split(';')).issubset(dsmal_list) )
+
+                         # retains TTL lots
+                         | ( full_table['sheet'].str.contains('DWHView') )
                        ]
 
+#print('2. unique values in sheet', full_table.sheet.unique())
 
-# counting of LOH & TTL
-'''
-tuples to store each segment's values: LOH, TTL, LRR
+
+# tuples to store each segment's values: LOH, TTL, LRR
+dsmal_loh, plt_loh, sens_loh, ts_loh, wuxicc_loh, wuxids_loh, pob_loh = "", "", "", "", "", "", ""
+dsmal_ttl, plt_ttl, sens_ttl, ts_ttl, wuxicc_ttl, wuxids_ttl, pob_ttl = "", "", "", "", "", "", ""
+dsmal_LRR, plt_LRR, sens_LRR, ts_LRR, wuxicc_LRR, wuxids_LRR, pob_LRR = "", "", "", "", "", "", ""
 segment_loh = [ dsmal_loh, plt_loh, sens_loh, ts_loh, wuxicc_loh, wuxids_loh, pob_loh ]
 segment_ttl = [ dsmal_ttl, plt_ttl, sens_ttl, ts_ttl, wuxicc_ttl, wuxids_ttl, pob_ttl ]
 segment_LRR = [ dsmal_LRR, plt_LRR, sens_LRR, ts_LRR, wuxicc_LRR, wuxids_LRR, pob_LRR ]
+segment_tuple = ('DSMAL', 'PLT', 'SENS', 'TS', 'WUXI CC', 'WUXI DS', 'POB')
 
+# counting of segment's stats
+for loh, ttl, lrr, name in zip(segment_loh, segment_ttl, segment_LRR, segment_tuple):
 
-for loh, ttl, lrr in zip(segment_loh, segment_ttl, segment_LRR):
     # https://www.programiz.com/python-programming/methods/built-in/zip
+    if 'DSMAL' in name:
+        continue
+    if 'SENS' in name:
+        # need to take into consideration for SENS, since the data for TTL is split into 2 worksheets
+        continue
+    else:
+        loh = len( full_table[ full_table['sheet'].str.contains(name) & full_table['sheet'].str.contains('LOH') ].index )
+        ttl = len( full_table[ full_table['sheet'].str.contains(name) & full_table['sheet'].str.contains('DWHView') ].index )
+        lrr = round(loh / ttl, 5)
+        print(f'{name}\'s stats are {loh}, {ttl}, {lrr*100}%')
 
-'''
+segment_stats = zip(segment_tuple, segment_loh, segment_ttl, segment_LRR)
+segment_stats_list = list(segment_stats)
+
+
 
 full_table['new'] = full_table['Hold Comments'].str.split(":")
 #full_table['a new'] = full_table[ full_table['new'].map(len) ]
 #full_table['a new'] = full_table['new'].apply(lambda x:x[0])
+'''
 
 print( full_table.head() )
 
@@ -97,6 +124,7 @@ print( full_table.shape )
 #print( "WUXI DS:", len( full_table[ full_table['sheet'].str.contains('WUXI DS') ].index )  )
 print( "WUXI DS LOH:", len( full_table[ full_table['sheet'].str.contains('WUXI DS') & full_table['sheet'].str.contains('LOH') ].index )  )
 print( "WUXI DS TTL:", len( full_table[ full_table['sheet'].str.contains('WUXI DS') & full_table['sheet'].str.contains('DWHView') ].index )  )
+'''
 
 #print( full_table['Hold Comments'].str )
 
