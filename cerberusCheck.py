@@ -129,12 +129,12 @@ full_table['new'] = full_table['Hold Comments'].str.split(":")
 dsmal ttl lots '''
 #dsmal_ttl = full_table[ full_table['sheet'].str.contains('DSMAL') & full_table['sheet'].str.contains('DWHView') ]
 dsmal_df = full_table.copy(deep=True)
-print( dsmal_df.head() )
 
 dsmal_df = dsmal_df[ dsmal_df['sheet'].str.contains('DSMAL') & dsmal_df['sheet'].str.contains('LOH') ]
 dsmal_df['new 2'] = [ x[1:] for x in dsmal_df['new'] if len(x) > 1 or x in ['Configure', 'Lot-Error'] ]
+#dsmal_df['new 3'] = dsmal_df[ dsmal_df['new 2'].str.split(";") ]
 
-print( dsmal_df.head(30) )
+print( dsmal_df.head(10) )
 
 #[ x for x in full_table['new'] if len(x) > 1 ]
 '''
@@ -151,6 +151,8 @@ dsmal_df['new 2'] = [ x for x in dsmal_df['Hold Comments'] if len(x) > 1 ]
 #full_table['a new'] = full_table['new'].apply(lambda x:x[0])
 
 '''
+# debugging for DataFrame holding all segments, except for DSMAL's TTL
+
 print( full_table.head() )
 
 print( full_table.columns )
@@ -173,6 +175,19 @@ https://stackoverflow.com/questions/8113782/split-string-on-whitespace-in-python
 https://pandas.pydata.org/pandas-docs/version/0.23.4/text.html
 https://medium.com/swlh/3-ways-to-filter-pandas-dataframe-by-column-values-dfb6609b31de
 
+'''
+
+'''
+from friday (30/10)'s session
+https://stackoverflow.com/questions/17322109/get-dataframe-row-count-based-on-conditions
+https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.copy.html
+https://stackoverflow.com/questions/20246722/typeerror-object-of-type-float-has-no-len
+https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.dtypes.html
+https://www.programiz.com/python-programming/list-comprehension
+https://stackoverflow.com/questions/40646458/list-comprehension-in-pandas
+https://www.geeksforgeeks.org/python-retain-list-elements-value-items/
+https://towardsdatascience.com/how-to-quickly-create-and-unpack-lists-with-pandas-d0e78e487c75
+https://www.kite.com/python/answers/how-to-limit-a-float-to-two-decimal-places-in-python
 
 
 '''
