@@ -1,5 +1,7 @@
 import pandas as pd 
 import numpy as np 
+#import regex as rg 
+import xlsxwriter as xl
 
 '''
 Workflow outline of Weekly Cerberus Check
@@ -19,7 +21,7 @@ Workflow outline of Weekly Cerberus Check
 4) check each segment's LOH/TTL (Cerberus) against LOH/TTL (Tableau/Excel)
 '''
 
-filename = r"\\sinsdn38.ap.infineon.com\BE_CLUSTER_PTE\04_Data_Management\09_Intern_Projects\Haikal Yusuf\Weekly LRR Reports\LW2103 Compile.xlsx"
+filename = r"\\sinsdn38.ap.infineon.com\BE_CLUSTER_PTE\04_Data_Management\09_Intern_Projects\Haikal Yusuf\Weekly LRR Reports\LW2104 Compile.xlsx"
 '''
 logweek = input("Which logweek would you like to query?")
 logweek = int(logweek)
@@ -122,11 +124,13 @@ segment_stats = zip(segment_tuple, segment_loh, segment_ttl, segment_LRR)
 segment_stats_list = list(segment_stats)
 '''
 
+'''
+#   To set up an Excel workbook to track all segment's values: LOH, TTL & LRR%
+'''
 #full_table["Hold Comments"] = full_table["Hold Comments"].astype(str)
 full_table['new'] = full_table['Hold Comments'].str.split(":")
 
-'''
-dsmal ttl lots '''
+# dsmal ttl lots 
 #dsmal_ttl = full_table[ full_table['sheet'].str.contains('DSMAL') & full_table['sheet'].str.contains('DWHView') ]
 dsmal_df = full_table.copy(deep=True)
 
@@ -135,6 +139,7 @@ dsmal_df['new 2'] = [ x[1:] for x in dsmal_df['new'] if len(x) > 1 or x in ['Con
 #dsmal_df['new 3'] = dsmal_df[ dsmal_df['new 2'].str.split(";") ]
 
 print( dsmal_df.head(10) )
+
 
 #[ x for x in full_table['new'] if len(x) > 1 ]
 '''

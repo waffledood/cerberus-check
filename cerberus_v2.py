@@ -3,7 +3,7 @@ import numpy as np
 
 '''
 docstring
-function: the purpose of this code is to read each segment's CSV file & 
+function: the purpose of this code is to read each segment's CSV file & calculate the relevant stats (LOH, TTL)
 '''
 
 # declaration & instantiation of variables (dataframes & paths)
