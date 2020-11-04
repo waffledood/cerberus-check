@@ -1,0 +1,17 @@
+Development plan for Automated Weekly Cerberus Check
+
+1) cerberusCheck.py
+   -> to read LOH, TTL & LRR values from the Cerberus data
+    * to set it as a function, return list of lists, each list (Segment Name, LOH, TTL, LRR)
+
+2) cerberus_v2.py
+   -> to read LOH, TTL & LRR values from Tableau (underlying Excel data)
+    * to set it as a function, return list of lists, each list (Segment Name, LOH, TTL, LRR)
+
+3) ???.py
+   -> to compare the LRR values between Cerberus & Tableau, then generate a report.
+      Additionally, before printing the generated report, print out stats of all segments
+      to cmd (use the modules to print colored text, red & green)
+   -> imports the earlier 2 programs 
+    * read & iterate through the lists from the 2 programs & compares the LRR values. 
+      If the difference 

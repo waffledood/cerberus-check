@@ -10,15 +10,15 @@ The Python script itself takes a while to read the Excel sheet because of the hu
 Process:
 
 1. Data extracted from Cerberus is manually filtered (Owner, then Hold Comments). The data for LOH & TTL lots for each segment are separated into individual Excel Worksheets. So 2 (LOH, TTL) x 7 (segments) = 14 worksheets. The count of LOH & TTL lots (number of rows) is then extracted from each worksheet.
-- WorkflowOutline.py (will rename this later lol)
+- cerberusCheck.py
 
 2. Count for LOH & TTL lots is extracted from the underlying database of the Tableau charts.
-- csv_export.vb
+- csv_export.vb (consists of cerberusv4 sub & POB_CSV2 sub)
 - cerberus_v2.py
 
 3. Comparison is made between the values of "Sum LOH" & "Total Lot Count" to check the data sanity. 
-- Python program to be developed with the following funcionalities.
 * Compare the LOH, TTL & LRR% values for each segment & correspondingly generate a report if the LRR% are within an acceptable range
+- cerberus_report.py
 
 
 Future areas of improvement:
@@ -31,6 +31,10 @@ Future areas of improvement:
 Decided course of action:
 1. ~~Extract each DDM_FINAL Worksheet from each Segment's Masterfile Workbook as a CSV file (csv_export.vb)~~. (Done)
 2. ~~Calculate the LOH & TTL count from each Segment's CSV file (cerberus_v2.py)~~. (Done)
+
+
+Things to work on:
+1. Add a filter for "100% Hold Condition" to keep NULL & NO for TS SIN, in cerberus_v2.py
 
 Notes:
 - cerberusCheck.py developed to **filter the data extracted from Cerberus**

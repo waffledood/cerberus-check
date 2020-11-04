@@ -1,0 +1,31 @@
+Modules that can be used to print colored text on the terminal (all installable via pip):
+https://stackoverflow.com/questions/287871/how-to-print-colored-text-in-python
+- termcolor
+- colorama
+
+
+how to print colored text on the windows terminal (cmd)
+
+1) First in cmd, type "os.system('color')"
+2) Next, enter into python from cmd, type "python"
+3) Next, import the termcolor module, type "from termcolor import colored"
+4) Next, enter the colored string you want, "print(colored('hello', 'red'), colored('world', 'green'))"
+
+
+second opinion is these style of printing:
+print('\x1b[6;30;42m' + 'Success!' + '\x1b[0m')
+-> the String will be highlighted in green, which would be more helpful for my use case
+
+
+how to read the above format of printing strings with colors & highlights
+\xlb[ 6;30;42 m
+the 6;30;42 is the format the string will be printed in
+
+String format(s) that we would be useful for my usecase:
+- green highlighted black-colored font
+6;30;42
+5;30;42
+
+- red highlighted black-colored font
+6;30;41
+5;30;41
