@@ -22,12 +22,12 @@ def tabulate():
     path_wuxicc = r"\\sinsdn38.ap.infineon.com\BE_CLUSTER_PTE\04_Data_Management\09_Intern_Projects\Haikal Yusuf\Weekly Cerberus Check (Automated)\WUXI CC.csv"
     path_wuxids = r"\\sinsdn38.ap.infineon.com\BE_CLUSTER_PTE\04_Data_Management\09_Intern_Projects\Haikal Yusuf\Weekly Cerberus Check (Automated)\WUXI DS.csv"
 
-
-    # df_pob, path_pob, 
+    print("These are the Tableau values")
 
     # setting a tuple each for dataframes & paths
     df_tuple = [df_dsmal, df_plt, df_sens, df_ts, df_wuxicc, df_wuxids, df_pob]
     path_tuple = [path_dsmal, path_plt, path_sens, path_ts, path_wuxicc, path_wuxids, path_pob]
+    segment_stats_list = []
 
     # Logweek
     logweek = input("Which logweek do you want to query? ")
@@ -35,20 +35,15 @@ def tabulate():
 
 
     # main loop to go through the tuples of paths & dataframes & perform LOH & TTL count
-    for df, path in zip(df_tuple, path_tuple):
+    #for df, path in zip(df_tuple, path_tuple):
+    for i, path in enumerate(path_tuple):
         try:
-            df = pd.read_csv(path, skiprows=0)
+            df = pd.read_csv(path, skiprows=0, low_memory=False)
+            # bad practice to set low_memory=False
 
             # variables tracking LOH & TTL
             loh_count = 0
             ttl_count = 0
-
-            # Logweek
-            #logweek = 2102
-            '''
-            logweek = input("Which logweek do you want to query?")
-            logweek = int(logweek)
-            '''
 
             # segment's name
             segment_list = path.split("\\")
@@ -56,8 +51,10 @@ def tabulate():
 
             # checking for LOH - Lot On Hold
             if "MAL DS" in segment:
-                print("do something")
                 df_loh = df[(df['LW'] == logweek) & (df['ALF_DISPOSITION'] == 'ON-HOLD') & (df['PTE/UPE'] != 'UPE')]
+                loh_count = len(df_loh.index)
+            elif "TS" in segment:
+                df_loh = df[ (df['LW'] == logweek) & (df['ALF_DISPOSITION'] == 'ON-HOLD') & (df['100% Hold'] != 'YES') ]
                 loh_count = len(df_loh.index)
             else:
                 df_loh = df[(df['LW'] == logweek) & (df['ALF_DISPOSITION'] == 'ON-HOLD')]
@@ -66,16 +63,27 @@ def tabulate():
             # checking for TTL - Total Lot Count
             df_ttl = df[(df['LW'] == logweek) & (df['ALF_DISPOSITION'] == 'AUTO RELEASE')]
             ttl_count = len(df_ttl.index)
+            df_tuple[i] = df
 
             # print out segment's stats
-            print(f'{segment}\'s stats are {loh_count}, {ttl_count}')
+            #print(f'{segment}\'s stats are {loh_count}, {ttl_count}')
+            segment_stats_list.append([segment, loh_count, ttl_count, round(loh_count / ttl_count, 5)])
+            # segment_tuple, segment_loh, segment_ttl, segment_LRR
         except Exception as e:
             print("Error caught")
             print(e)
 
+    #print(df_tuple)
+
+    return segment_stats_list
+
+'''
+a = tabulate()
+print(a)
+'''
 
 
-    '''
+'''
     INITIAL FINDINGS:
 
     1. Results for LW2101

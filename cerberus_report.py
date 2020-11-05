@@ -6,6 +6,7 @@ import numpy as np
 # apparently the above 2 methods don't work... it worked when used in the CS50 projects (recall from . import views)
 import cerberus_v2
 import cerberusCheck
+import os
 
 '''
         Workflow outline of Weekly Cerberus Check
@@ -44,7 +45,104 @@ docstring
 
 '''
 
-cerberus_v2.tabulate()
-cerberusCheck.tabulate()
+# interesting observation, the import cerberus_v2 statement above causes the tabulate() function to run
+tableau_data = cerberus_v2.tabulate()
+cerberus_data = cerberusCheck.tabulate()
+
+print( tableau_data )
+print( cerberus_data )
+
+segment_range = {'DSMAL': [2,3],
+                 'TS': [0.50, 1],
+                 'Others': [0, 1]
+                }
+
+# each of the variables above hold a list of lists. each list item is as follows:
+#   segment_tuple, segment_loh, segment_ttl, segment_LRR
+#   name, LOH, TTL, LRR
+
+for i, cerb in enumerate(cerberus_data):
+    tab = tableau_data[i]
+    #print("tab is", tab)
+
+    tab_name = tab[0]
+    cerb_name = cerb[0]
+
+    tab_LRR = tab[-1]
+    #tab_LRR = tableau_data[i][-1]
+    cerb_LRR = cerb[-1]
+
+    #print("tab LRR is", tab_LRR, ", cerb LRR is", cerb_LRR)
+
+    new_segment = ""
+    old_segment = ""
+
+    lrr_diff = abs(tab_LRR - cerb_LRR)
+
+    if cerb_name == "DSMAL":
+        #new_segment = cerb_name if lrr_diff >= 2 and lrr_diff <= 3 else new_segment
+        new_segment = cerb_name if lrr_diff < 2 or lrr_diff > 3 else new_segment
+    elif cerb_name == "TS":
+        #new_segment = cerb_name if lrr_diff >= 0.50 and lrr_diff <= 1 else new_segment
+        new_segment = cerb_name if lrr_diff < 0.50 or lrr_diff > 1 else new_segment
+    else:
+        #new_segment = cerb_name if lrr_diff >= 0 and lrr_diff <= 1 else new_segment
+        new_segment = cerb_name if lrr_diff > 1 else new_segment
+
+    if old_segment != new_segment:
+        s = f"{new_segment}\'s values are outside of the acceptable range, {lrr_diff * 100}%"
+        old_segment = new_segment
+        print(s)
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+'''
+this section was an experiment to have Python automatically find the latest Excel file in Weekly LRR Reports & then read it
+this could carry over to cerberus_v2.py where the user would not need to key in the latest LogWeek, instead the Python module
+reads the path of the latest file, splits it & extracts the LogWeek value
+
+def latestFile(path):
+    # 2nd answer in 
+    # https://stackoverflow.com/questions/39327032/how-to-get-the-latest-file-in-a-folder-using-python
+    # might also be useful: https://realpython.com/working-with-files-in-python/
+    files = os.listdir(path)
+    paths = [os.path.join(path, basename) for basename in files]
+    return max(paths, key=os.path.getctime)
+
+# latest Cerberus report  
+
+path = r'Z:\04_Data_Management\09_Intern_Projects\Haikal Yusuf\Weekly LRR Reports'
+#path = repr(path)
+filename = latestFile(path)
+
+print(filename)
+print("the type of this file is", type(filename))
+
+df = pd.read_excel(io=filename, sheet_name=None)
+#print (df)
+'''
