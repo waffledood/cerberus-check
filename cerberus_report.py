@@ -5,6 +5,7 @@ import numpy as np
 #from . import cerberusCheck
 # apparently the above 2 methods don't work... it worked when used in the CS50 projects (recall from . import views)
 import cerberus_v2
+import cerberusCheck
 
 '''
         Workflow outline of Weekly Cerberus Check
@@ -44,6 +45,6 @@ docstring
 '''
 
 cerberus_v2.tabulate()
-
+cerberusCheck.tabulate()
 
 

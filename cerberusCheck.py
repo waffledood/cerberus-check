@@ -116,21 +116,44 @@ def tabulate():
     '''
     #   To set up an Excel workbook to track all segment's values: LOH, TTL & LRR%
     '''
-    #full_table["Hold Comments"] = full_table["Hold Comments"].astype(str)
-    full_table['new'] = full_table['Hold Comments'].str.split(":")
+        #full_table["Hold Comments"] = full_table["Hold Comments"].astype(str)
+    #full_table['new'] = full_table['Hold Comments'].str.split(":")
+    full_table['new'] = full_table['Hold Comments'].str.split(";+|:+")
 
     # dsmal ttl lots 
     #dsmal_ttl = full_table[ full_table['sheet'].str.contains('DSMAL') & full_table['sheet'].str.contains('DWHView') ]
     dsmal_df = full_table.copy(deep=True)
 
+    dsmal_list = ['1WAVIS','2DVIS','2TPVIS','3BOVIS','INTAPE','MBIN1','MISDEV','N.A.','OUTPAD','PADCOV','PADEDG','PADIMM','PNP','PURGE','TWBOTT','TWTOP','VISION_IN_TAPE']
+
     dsmal_df = dsmal_df[ dsmal_df['sheet'].str.contains('DSMAL') & dsmal_df['sheet'].str.contains('LOH') ]
-    dsmal_df['new 2'] = [ x[1:] for x in dsmal_df['new'] if len(x) > 1 or x in ['Configure', 'Lot-Error'] ]
-    #dsmal_df['new 3'] = dsmal_df[ dsmal_df['new 2'].str.split(";") ]
 
-    print( dsmal_df.head(10) )
+    print( "1. dsmal df size is", len(dsmal_df.index) )
+
+    dsmal_df['new 1'] = [ x[1:] for x in dsmal_df['new'] if len(x) > 1 or x in ['Configure', 'Lot-Error'] ] # line 49
+    #dsmal_df['new 3'] = [ x for x in dsmal_df['new'] if x in dsmal_list ]
+
+    print( "2. dsmal df size is", len(dsmal_df.index) )
+    #print( dsmal_df.applymap(lambda x: isinstance(x, list)).all() )
+    # check if column is a list: https://blog.softhints.com/pandas-typeerror-unhashable-type-list-dict/
+
+    k = dsmal_df[ dsmal_df['new 1'].apply(lambda x: set(x).issubset(set(dsmal_list))) ] 
+    # https://stackoverflow.com/questions/59894777/python-using-isin-on-my-dataframe-throws-an-error
+    print(k)
+
+    print( "3. dsmal df size is", len(k.index) )
+
+    dsmal_loh = len(dsmal_df.index) - len(k.index)
+
+    import os 
+    os.system('color')
+    print("dsmal LOH value is ", end='')
+    print('\x1b[6;30;42m' + str(dsmal_loh) + '\x1b[0m')
+    
+    #k = pd.DataFrame(dsmal_df['new 1'].tolist()).drop(dsmal_df.columns[[1]], axis=1, inplace=True).isin(dsmal_list)
+   # k = pd.DataFrame(dsmal_df['new 1'].tolist()).iloc[:, [1]].isin(dsmal_list)
 
 
-    #[ x for x in full_table['new'] if len(x) > 1 ]
     '''
     for x in full_table['new'] if len(x) > 1:
         full_table.extend( [x] )
@@ -185,3 +208,5 @@ def tabulate():
 
 
     '''
+
+tabulate()
