@@ -22,7 +22,7 @@ def tabulate():
     path_wuxicc = r"\\sinsdn38.ap.infineon.com\BE_CLUSTER_PTE\04_Data_Management\09_Intern_Projects\Haikal Yusuf\Weekly Cerberus Check (Automated)\WUXI CC.csv"
     path_wuxids = r"\\sinsdn38.ap.infineon.com\BE_CLUSTER_PTE\04_Data_Management\09_Intern_Projects\Haikal Yusuf\Weekly Cerberus Check (Automated)\WUXI DS.csv"
 
-    print("These are the Tableau values")
+    #print("These are the Tableau values")
 
     # setting a tuple each for dataframes & paths
     df_tuple = [df_dsmal, df_plt, df_sens, df_ts, df_wuxicc, df_wuxids, df_pob]

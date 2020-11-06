@@ -134,33 +134,33 @@ print(report)
 
 
 
+'''
+references:
+- https://stackoverflow.com/questions/11178061/print-list-without-brackets-in-a-single-row
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+'''
 
 
 
 
 '''
-this section was an experiment to have Python automatically find the latest Excel file in Weekly LRR Reports & then read it
+Section 2:
+
+this section looks into creating new files with dynamic names, where each file's name includes the past 
+LogWeek's value, e.g. LW2104. So file names should look like "KT Report LW2104.txt"
+
+
+'''
+
+
+
+'''
+Section 1:
+
+this section was an experiment to have Python automatically find the latest Excel file in Weekly LRR Reports & then read it.
 this could carry over to cerberus_v2.py where the user would not need to key in the latest LogWeek, instead the Python module
-reads the path of the latest file, splits it & extracts the LogWeek value
+reads the path of the latest file, splits the path & extracts the LogWeek value
 
 def latestFile(path):
     # 2nd answer in 

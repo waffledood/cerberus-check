@@ -35,7 +35,7 @@ Decided course of action:
 
 Things to work on:
 1. ~~Add a filter for "100% Hold Condition" to keep NULL & NO for TS SIN, in cerberus_v2.py~~ (Done)
-2. Adjust LOH value for DSMAL Tableau
+2. ~~Adjust LOH value for DSMAL Tableau~~ (Done)
 
 Notes:
 - cerberusCheck.py developed to **filter the data extracted from Cerberus**
