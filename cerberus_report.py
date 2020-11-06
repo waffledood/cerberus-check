@@ -150,6 +150,8 @@ Section 2:
 this section looks into creating new files with dynamic names, where each file's name includes the past 
 LogWeek's value, e.g. LW2104. So file names should look like "KT Report LW2104.txt"
 
+generic website: https://www.guru99.com/reading-and-writing-files-in-python.html
+detailed answer on StackOverflow: https://stackoverflow.com/questions/47147653/write-to-files-with-dynamic-file-names
 
 '''
 
