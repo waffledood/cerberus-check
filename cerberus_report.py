@@ -96,9 +96,10 @@ for i, cerb in enumerate(cerberus_data):
         s = f"{new_segment}\'s values are outside of the acceptable range, {lrr_diff_str}%"
         old_segment = new_segment
         lrr_diff_list.append(new_segment)
-        lrr_diff_list_full.append([new_segment, lrr_diff])
+        lrr_diff_list_full.append([new_segment, lrr_diff, cerb, tab])
         print(s)
-        print("lrr diff list is:", lrr_diff_list)
+        #print("lrr diff list is:", lrr_diff_list)
+        #print("lrr diff list (full) is:", lrr_diff_list_full)
 
 '''
 if not lrr_diff_list:
@@ -113,8 +114,21 @@ report = f"Good morning KT, just finished the Weekly Cerberus Check & here are t
 
 #for segment in lrr_diff_list:
 for segment in lrr_diff_list_full:
-    report += f"\n\n{segment[0]}\'s difference is {segment[1]}% \n\n" 
-    #report += f"{segment} \n Cerberus vs Tableau \n LOH {} vs {} \n TTL {} vs {} \n LRR% {} vs {}"
+    report += f"\n\n\n{segment[0]}\'s difference is {segment[1]}% \n\n" 
+
+    segment_name = segment[0]
+
+    segment_cerb_stats = segment[2]
+    segment_cerb_loh = segment_cerb_stats[1]
+    segment_cerb_ttl = segment_cerb_stats[2]
+    segment_cerb_lrr = round(segment_cerb_stats[3] * 100, 2)
+
+    segment_tab_stats = segment[3]
+    segment_tab_loh = segment_tab_stats[1]
+    segment_tab_ttl = segment_tab_stats[2]
+    segment_tab_lrr = round(segment_tab_stats[3] * 100, 2)
+    
+    report += f"{segment_name} \nCerberus vs Tableau \nLOH {segment_cerb_loh} vs {segment_tab_loh} \nTTL {segment_cerb_ttl} vs {segment_tab_ttl} \nLRR% {segment_cerb_lrr} vs {segment_tab_lrr}"
 
 print(report)
 
