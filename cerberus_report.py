@@ -4,6 +4,7 @@ import numpy as np
 #from . import cerberus_v2 
 #from . import cerberusCheck
 # apparently the above 2 methods don't work... it worked when used in the CS50 projects (recall from . import views)
+
 import cerberus_v2
 import cerberusCheck
 import os
@@ -49,8 +50,8 @@ docstring
 tableau_data = cerberus_v2.tabulate()
 cerberus_data = cerberusCheck.tabulate()
 
-print( tableau_data )
-print( cerberus_data )
+#print( tableau_data )
+#print( cerberus_data )
 
 segment_range = {'DSMAL': [2,3],
                  'TS': [0.50, 1],
@@ -60,6 +61,9 @@ segment_range = {'DSMAL': [2,3],
 # each of the variables above hold a list of lists. each list item is as follows:
 #   segment_tuple, segment_loh, segment_ttl, segment_LRR
 #   name, LOH, TTL, LRR
+
+lrr_diff_list = []
+lrr_diff_list_full = []
 
 for i, cerb in enumerate(cerberus_data):
     tab = tableau_data[i]
@@ -72,29 +76,47 @@ for i, cerb in enumerate(cerberus_data):
     #tab_LRR = tableau_data[i][-1]
     cerb_LRR = cerb[-1]
 
-    #print("tab LRR is", tab_LRR, ", cerb LRR is", cerb_LRR)
-
     new_segment = ""
     old_segment = ""
 
-    lrr_diff = abs(tab_LRR - cerb_LRR)
+    #lrr_diff = abs(tab_LRR - cerb_LRR)
+    lrr_diff = round(abs(tab_LRR - cerb_LRR) * 100, 5)
 
     if cerb_name == "DSMAL":
-        #new_segment = cerb_name if lrr_diff >= 2 and lrr_diff <= 3 else new_segment
-        new_segment = cerb_name if lrr_diff < 2 or lrr_diff > 3 else new_segment
+        # new_segment = cerb_name if lrr_diff < 2 or lrr_diff > 3 else new_segment
+        # we still need to report on the value of DSMAL, so the assignment of new_segment still needs to be done regardless
+        new_segment = cerb_name
     elif cerb_name == "TS":
-        #new_segment = cerb_name if lrr_diff >= 0.50 and lrr_diff <= 1 else new_segment
         new_segment = cerb_name if lrr_diff < 0.50 or lrr_diff > 1 else new_segment
     else:
-        #new_segment = cerb_name if lrr_diff >= 0 and lrr_diff <= 1 else new_segment
         new_segment = cerb_name if lrr_diff > 1 else new_segment
 
     if old_segment != new_segment:
-        s = f"{new_segment}\'s values are outside of the acceptable range, {lrr_diff * 100}%"
+        lrr_diff_str = '\x1b[0;30;41m' + str(lrr_diff) + '\x1b[0m'
+        s = f"{new_segment}\'s values are outside of the acceptable range, {lrr_diff_str}%"
         old_segment = new_segment
+        lrr_diff_list.append(new_segment)
+        lrr_diff_list_full.append([new_segment, lrr_diff])
         print(s)
+        print("lrr diff list is:", lrr_diff_list)
 
+'''
+if not lrr_diff_list:
+    error_segments = " except for " + ", ".join(lrr_diff_list)
+    report = f"Good morning KT, just finished the Weekly Cerberus Check & here are the findings.\nAll segments' LRR% are within the acceptable range{error_segments}."
+    print(report)
+else:
+'''
 
+error_segments = " except for " + ", ".join(lrr_diff_list)
+report = f"Good morning KT, just finished the Weekly Cerberus Check & here are the findings.\n\nAll segments' LRR% are within the acceptable range{error_segments}."
+
+#for segment in lrr_diff_list:
+for segment in lrr_diff_list_full:
+    report += f"\n\n{segment[0]}\'s difference is {segment[1]}% \n\n" 
+    #report += f"{segment} \n Cerberus vs Tableau \n LOH {} vs {} \n TTL {} vs {} \n LRR% {} vs {}"
+
+print(report)
 
 
 

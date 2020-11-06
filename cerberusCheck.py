@@ -103,8 +103,10 @@ def tabulate():
 
             import os 
             os.system('color')
+            '''
             print("DSMAL LOH value is ", end='')
             print('\x1b[6;30;42m' + str(dsmal_loh) + '\x1b[0m')
+            '''
 
             segment_loh[i] = dsmal_loh
             segment_ttl[i] = len( full_table[ full_table['sheet'].str.contains(name) & full_table['sheet'].str.contains('DWHView') ].index )
