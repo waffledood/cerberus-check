@@ -12,7 +12,7 @@ def tabulate():
     '''
 
 
-    filename = r"\\sinsdn38.ap.infineon.com\BE_CLUSTER_PTE\04_Data_Management\09_Intern_Projects\Haikal Yusuf\Weekly LRR Reports\LW2104 Compile.xlsx"
+    filename = r"\\sinsdn38.ap.infineon.com\BE_CLUSTER_PTE\04_Data_Management\09_Intern_Projects\Haikal Yusuf\Weekly LRR Reports\LW2105 Compile.xlsx"
     '''
     logweek = input("Which logweek would you like to query?")
     logweek = int(logweek)
@@ -103,10 +103,10 @@ def tabulate():
 
             import os 
             os.system('color')
-            '''
+            
             print("DSMAL LOH value is ", end='')
             print('\x1b[6;30;42m' + str(dsmal_loh) + '\x1b[0m')
-            '''
+            
 
             segment_loh[i] = dsmal_loh
             segment_ttl[i] = len( full_table[ full_table['sheet'].str.contains(name) & full_table['sheet'].str.contains('DWHView') ].index )
@@ -125,7 +125,7 @@ def tabulate():
 
         loh = len( full_table[ full_table['sheet'].str.contains(name) & full_table['sheet'].str.contains('LOH') ].index )
         lrr = round(loh / ttl, 5)
-        #print(f'{name}\'s stats are {loh}, {ttl}, {lrr*100}%')
+        print(f'{name}\'s stats are {loh}, {ttl}, {lrr*100}%')
 
         segment_loh[i] = loh
         segment_ttl[i] = ttl
@@ -141,7 +141,7 @@ def tabulate():
     '''
     #   To set up an Excel workbook to track all segment's values: LOH, TTL & LRR%
     '''
-
+#tabulate()
 
 '''
 references:

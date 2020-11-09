@@ -66,7 +66,7 @@ def tabulate():
             df_tuple[i] = df
 
             # print out segment's stats
-            #print(f'{segment}\'s stats are {loh_count}, {ttl_count}')
+            print(f'{segment}\'s stats are {loh_count}, {ttl_count}')
             segment_stats_list.append([segment, loh_count, ttl_count, round(loh_count / ttl_count, 5)])
             # segment_tuple, segment_loh, segment_ttl, segment_LRR
         except Exception as e:
@@ -81,6 +81,7 @@ def tabulate():
 a = tabulate()
 print(a)
 '''
+a = tabulate()
 
 
 '''
