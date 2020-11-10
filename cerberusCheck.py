@@ -125,7 +125,7 @@ def tabulate():
 
         loh = len( full_table[ full_table['sheet'].str.contains(name) & full_table['sheet'].str.contains('LOH') ].index )
         lrr = round(loh / ttl, 5)
-        print(f'{name}\'s stats are {loh}, {ttl}, {lrr*100}%')
+        #print(f'{name}\'s stats are {loh}, {ttl}, {lrr*100}%')
 
         segment_loh[i] = loh
         segment_ttl[i] = ttl

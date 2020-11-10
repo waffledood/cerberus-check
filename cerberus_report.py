@@ -40,14 +40,18 @@ import os
         cerberus_report.py
 '''
 
-
 '''
 docstring
 
 '''
 
+
 # interesting observation, the import cerberus_v2 statement above causes the tabulate() function to run
-tableau_data = cerberus_v2.tabulate()
+
+logweek = input("Which logweek do you want to query? ")
+logweek = int(logweek)
+
+tableau_data = cerberus_v2.tabulate(logweek)
 cerberus_data = cerberusCheck.tabulate()
 
 #print( tableau_data )
@@ -133,6 +137,24 @@ for segment in lrr_diff_list_full:
 print(report)
 
 
+'''
+Section 3: File Creation
+'''
+
+name = "WCC (KT Report) - " + str(logweek)
+filename = "%s.txt" % name
+
+# might need to change dir with os.dir (can't remember exact name)
+
+'''
+with open("WCC (KT Report) - " + str(logweek) + ".txt", "w") as file:
+    file.write(report) 
+
+with open('WCC (KT Report) - LW{0}.txt'.format(str(logweek)),'w') as f:
+    f.write(report) '''
+
+with open('C:\\Users\\MohamadYusuf\\Desktop\\Haikal\\Personal Projects\\cerberus-check\\WCC (KT Report) - LW%s.txt' % (str(logweek),), 'w') as f:    
+    f.write(report)
 
 '''
 references:
@@ -151,7 +173,9 @@ this section looks into creating new files with dynamic names, where each file's
 LogWeek's value, e.g. LW2104. So file names should look like "KT Report LW2104.txt"
 
 generic website: https://www.guru99.com/reading-and-writing-files-in-python.html
-detailed answer on StackOverflow: https://stackoverflow.com/questions/47147653/write-to-files-with-dynamic-file-names
+detailed answer on StackOverflow (not quite the answer i was looking for): https://stackoverflow.com/questions/47147653/write-to-files-with-dynamic-file-names
+the accurate answer i was looking for! https://www.kite.com/python/answers/how-to-create-a-filename-using-variables-in-python
+
 
 '''
 
