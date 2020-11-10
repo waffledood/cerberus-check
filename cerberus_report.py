@@ -45,11 +45,52 @@ docstring
 
 '''
 
+'''
+Section 1:
+
+this section was an experiment to have Python automatically find the latest Excel file in Weekly LRR Reports & then read it.
+this could carry over to cerberus_v2.py where the user would not need to key in the latest LogWeek, instead the Python module
+reads the path of the latest file, splits the path & extracts the LogWeek value
+'''
+
+def latestFile(path):
+    # 2nd answer in 
+    # https://stackoverflow.com/questions/39327032/how-to-get-the-latest-file-in-a-folder-using-python
+    # might also be useful: https://realpython.com/working-with-files-in-python/
+    files = os.listdir(path)
+    paths = [os.path.join(path, basename) for basename in files]
+    return max(paths, key=os.path.getctime)
+
+# latest Cerberus report  
+
+path = r'Z:\04_Data_Management\09_Intern_Projects\Haikal Yusuf\Weekly LRR Reports'
+#path = repr(path)
+filename = latestFile(path)
+
+print(filename)
+print("the type of this file is", type(filename))
+
+st = filename.split("\\")
+logweek = st[-1].split(" ")[0]
+logweek = int( logweek[2:] )
+
+print('LogWeek value is:', logweek)
+
+#df = pd.read_excel(io=filename, sheet_name=None)
+#print (df)
+
+
+'''
+Section 2:
+
+
+'''
+
 
 # interesting observation, the import cerberus_v2 statement above causes the tabulate() function to run
 
-logweek = input("Which logweek do you want to query? ")
-logweek = int(logweek)
+#logweek = input("Which logweek do you want to query? ")
+#logweek = int(logweek)
 
 tableau_data = cerberus_v2.tabulate(logweek)
 cerberus_data = cerberusCheck.tabulate()
@@ -71,19 +112,16 @@ lrr_diff_list_full = []
 
 for i, cerb in enumerate(cerberus_data):
     tab = tableau_data[i]
-    #print("tab is", tab)
 
     tab_name = tab[0]
     cerb_name = cerb[0]
 
     tab_LRR = tab[-1]
-    #tab_LRR = tableau_data[i][-1]
     cerb_LRR = cerb[-1]
 
     new_segment = ""
     old_segment = ""
 
-    #lrr_diff = abs(tab_LRR - cerb_LRR)
     lrr_diff = round(abs(tab_LRR - cerb_LRR) * 100, 5)
 
     if cerb_name == "DSMAL":
@@ -116,7 +154,6 @@ else:
 error_segments = " except for " + ", ".join(lrr_diff_list)
 report = f"Good morning KT, just finished the Weekly Cerberus Check & here are the findings.\n\nAll segments' LRR% are within the acceptable range{error_segments}."
 
-#for segment in lrr_diff_list:
 for segment in lrr_diff_list_full:
     report += f"\n\n\n{segment[0]}\'s difference is {segment[1]}% \n\n" 
 
@@ -138,73 +175,23 @@ print(report)
 
 
 '''
-Section 3: File Creation
-'''
-
-name = "WCC (KT Report) - " + str(logweek)
-filename = "%s.txt" % name
-
-# might need to change dir with os.dir (can't remember exact name)
-
-'''
-with open("WCC (KT Report) - " + str(logweek) + ".txt", "w") as file:
-    file.write(report) 
-
-with open('WCC (KT Report) - LW{0}.txt'.format(str(logweek)),'w') as f:
-    f.write(report) '''
-
-with open('C:\\Users\\MohamadYusuf\\Desktop\\Haikal\\Personal Projects\\cerberus-check\\WCC (KT Report) - LW%s.txt' % (str(logweek),), 'w') as f:    
-    f.write(report)
-
-'''
-references:
-- https://stackoverflow.com/questions/11178061/print-list-without-brackets-in-a-single-row
-
-
-'''
-
-
-
-
-'''
 Section 2:
 
-this section looks into creating new files with dynamic names, where each file's name includes the past 
+this section looks into saving the report as txt files with dynamic names, where each file's name includes the past 
 LogWeek's value, e.g. LW2104. So file names should look like "KT Report LW2104.txt"
 
 generic website: https://www.guru99.com/reading-and-writing-files-in-python.html
 detailed answer on StackOverflow (not quite the answer i was looking for): https://stackoverflow.com/questions/47147653/write-to-files-with-dynamic-file-names
 the accurate answer i was looking for! https://www.kite.com/python/answers/how-to-create-a-filename-using-variables-in-python
 
+references:
+- https://stackoverflow.com/questions/11178061/print-list-without-brackets-in-a-single-row
+
 
 '''
 
+# saves the report as a txt file to my local desktop
+with open('C:\\Users\\MohamadYusuf\\Desktop\\Haikal\\Personal Projects\\cerberus-check\\WCC (KT Report) - LW%s.txt' % (str(logweek),), 'w') as f:    
+    f.write(report)
 
 
-'''
-Section 1:
-
-this section was an experiment to have Python automatically find the latest Excel file in Weekly LRR Reports & then read it.
-this could carry over to cerberus_v2.py where the user would not need to key in the latest LogWeek, instead the Python module
-reads the path of the latest file, splits the path & extracts the LogWeek value
-
-def latestFile(path):
-    # 2nd answer in 
-    # https://stackoverflow.com/questions/39327032/how-to-get-the-latest-file-in-a-folder-using-python
-    # might also be useful: https://realpython.com/working-with-files-in-python/
-    files = os.listdir(path)
-    paths = [os.path.join(path, basename) for basename in files]
-    return max(paths, key=os.path.getctime)
-
-# latest Cerberus report  
-
-path = r'Z:\04_Data_Management\09_Intern_Projects\Haikal Yusuf\Weekly LRR Reports'
-#path = repr(path)
-filename = latestFile(path)
-
-print(filename)
-print("the type of this file is", type(filename))
-
-df = pd.read_excel(io=filename, sheet_name=None)
-#print (df)
-'''

@@ -1,19 +1,27 @@
+import os
+import pandas as pd 
 
-try:
-    logweek = 2104
+def latestFile(path):
+    # 2nd answer in 
+    # https://stackoverflow.com/questions/39327032/how-to-get-the-latest-file-in-a-folder-using-python
+    # might also be useful: https://realpython.com/working-with-files-in-python/
+    files = os.listdir(path)
+    paths = [os.path.join(path, basename) for basename in files]
+    return max(paths, key=os.path.getctime)
 
-    report = "testing text"
+# latest Cerberus report  
 
-    #fileName = 'WCC (KT Report) - LW{0}.txt'.format(str(logweek))
-    #with open(fileName, 'w') as f:
-    #with open('C:\Users\MohamadYusuf\Desktop\Haikal\Personal Projects\cerberus-check\WCC (KT Report) - LW{0}.txt'.format(str(logweek)), 'w') as f:
-    #import os
-    #fileName = os.getcwd() + '\\' + fileName
-    #with open(os.getcwd + 'WCC (KT Report) - LW%s.txt' % (str(logweek),), 'w') as f:
+path = r'Z:\04_Data_Management\09_Intern_Projects\Haikal Yusuf\Weekly LRR Reports'
+#path = repr(path)
+filename = latestFile(path)
 
-    with open('C:\\Users\\MohamadYusuf\\Desktop\\Haikal\\Personal Projects\\cerberus-check\\WCC (KT Report) - LW%s.txt' % (str(logweek),), 'w') as f:    
-        f.write(report)
+print(filename)
+print("the type of this file is", type(filename))
 
-except Exception as e:
-    print(e)
-    print("Error caught")
+st = filename.split("\\")
+ans = st[-1].split(" ")[0]
+
+print(ans)
+
+#df = pd.read_excel(io=filename, sheet_name=None)
+#print (df)
