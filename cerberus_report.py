@@ -8,6 +8,7 @@ import numpy as np
 import cerberus_v2
 import cerberusCheck
 import os
+import time 
 
 '''
         Workflow outline of Weekly Cerberus Check
@@ -42,8 +43,32 @@ import os
 
 '''
 docstring
+function: this module generates a report if any segment's LRR lie outside of the range of error
 
 '''
+
+'''
+Section 1:
+
+run the CerberusTransfer.xlsm first to extract the DDM_FINAL of each segment's Masterfile.xlsx
+
+'''
+
+def cerberusTransfer():
+    ebs = os.path.getmtime(r'\\sinsdn38.ap.infineon.com\BE_CLUSTER_PTE\04_Data_Management\09_Intern_Projects\Haikal Yusuf\Weekly Cerberus Check (Automated)\BATAM POB.csv')
+
+    #Run the macro
+    os.startfile(r'C:\Users\MohamadYusuf\Desktop\Haikal\Personal Projects\cerberus-check\CerberusTransfer.xlsm')
+
+    #Holding loop to ensure that the macro completes before moving on to prevent the macros from overlapping
+    while ebs == os.path.getmtime(r'\\sinsdn38.ap.infineon.com\BE_CLUSTER_PTE\04_Data_Management\09_Intern_Projects\Haikal Yusuf\Weekly Cerberus Check (Automated)\BATAM POB.csv'):
+        #Recheck condition every 5 seconds
+        print("sleeping")
+        time.sleep(5)
+    time.sleep(30)
+
+cerberusTransfer()
+
 
 '''
 Section 1:
@@ -61,10 +86,8 @@ def latestFile(path):
     paths = [os.path.join(path, basename) for basename in files]
     return max(paths, key=os.path.getctime)
 
-# latest Cerberus report  
 
 path = r'Z:\04_Data_Management\09_Intern_Projects\Haikal Yusuf\Weekly LRR Reports'
-#path = repr(path)
 filename = latestFile(path)
 
 print(filename)
@@ -76,14 +99,13 @@ logweek = int( logweek[2:] )
 
 print('LogWeek value is:', logweek)
 
-#df = pd.read_excel(io=filename, sheet_name=None)
-#print (df)
-
 
 '''
 Section 2:
 
-
+This section runs the modules that extract the LOH, TTL & LRR values from the Cerberus & Tableau dataset.
+A comparison is then done between the LRR values of each segment & if they are outside the allowed range of error,
+a report is generated containing further details of the corresponding segments.
 '''
 
 
@@ -94,9 +116,6 @@ Section 2:
 
 tableau_data = cerberus_v2.tabulate(logweek)
 cerberus_data = cerberusCheck.tabulate()
-
-#print( tableau_data )
-#print( cerberus_data )
 
 segment_range = {'DSMAL': [2,3],
                  'TS': [0.50, 1],
@@ -129,7 +148,9 @@ for i, cerb in enumerate(cerberus_data):
         # we still need to report on the value of DSMAL, so the assignment of new_segment still needs to be done regardless
         new_segment = cerb_name
     elif cerb_name == "TS":
-        new_segment = cerb_name if lrr_diff < 0.50 or lrr_diff > 1 else new_segment
+        # we do not need to report on TS because the Ceberus data accounts for both "YES" & "NO" values for 100% Hold while Tableau data only accounts for "NO"
+        #new_segment = cerb_name if lrr_diff < 0.50 or lrr_diff > 1 else new_segment
+        pass
     else:
         new_segment = cerb_name if lrr_diff > 1 else new_segment
 
@@ -171,11 +192,9 @@ for segment in lrr_diff_list_full:
     
     report += f"{segment_name} \nCerberus vs Tableau \nLOH {segment_cerb_loh} vs {segment_tab_loh} \nTTL {segment_cerb_ttl} vs {segment_tab_ttl} \nLRR% {segment_cerb_lrr} vs {segment_tab_lrr}"
 
-print(report)
-
 
 '''
-Section 2:
+Section 3:
 
 this section looks into saving the report as txt files with dynamic names, where each file's name includes the past 
 LogWeek's value, e.g. LW2104. So file names should look like "KT Report LW2104.txt"

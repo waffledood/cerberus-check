@@ -1,24 +1,15 @@
 Good morning KT, just finished the Weekly Cerberus Check & here are the findings.
 
-All segments' LRR% are within the acceptable range except for DSMAL, TS, POB.
+All segments' LRR% are within the acceptable range except for DSMAL, POB.
 
 
-DSMAL's difference is 0.055% 
+DSMAL's difference is 0.058% 
 
 DSMAL 
 Cerberus vs Tableau 
 LOH 136 vs 138 
-TTL 2040 vs 2087 
+TTL 2040 vs 2088 
 LRR% 6.67 vs 6.61
-
-
-TS's difference is 2.736% 
-
-TS 
-Cerberus vs Tableau 
-LOH 986 vs 820 
-TTL 6135 vs 6149 
-LRR% 16.07 vs 13.34
 
 
 POB's difference is 1.547% 
