@@ -1,4 +1,4 @@
-def tabulate():
+def tabulate(filename):
     import pandas as pd 
     import numpy as np 
     import xlsxwriter as xl
@@ -12,7 +12,7 @@ def tabulate():
     '''
 
 
-    filename = r"\\sinsdn38.ap.infineon.com\BE_CLUSTER_PTE\04_Data_Management\09_Intern_Projects\Haikal Yusuf\Weekly LRR Reports\LW2105 Compile.xlsx"
+    #filename = r"\\sinsdn38.ap.infineon.com\BE_CLUSTER_PTE\04_Data_Management\09_Intern_Projects\Haikal Yusuf\Weekly LRR Reports\LW2106 Compile.xlsx"
     '''
     logweek = input("Which logweek would you like to query?")
     logweek = int(logweek)

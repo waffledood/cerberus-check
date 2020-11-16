@@ -1,0 +1,21 @@
+Good morning KT, just finished the Weekly Cerberus Check & here are the findings.
+
+All segments' LRR% are within the acceptable range except for DSMAL, WUXI DS.
+
+
+DSMAL's difference is 0.193% 
+
+DSMAL 
+Cerberus vs Tableau 
+LOH 63 vs 63 
+TTL 943 vs 971 
+LRR% 6.68 vs 6.49
+
+
+WUXI DS's difference is 1.183% 
+
+WUXI DS 
+Cerberus vs Tableau 
+LOH 86 vs 98 
+TTL 998 vs 1000 
+LRR% 8.62 vs 9.8
