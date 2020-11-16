@@ -31,7 +31,8 @@ def cerberusTransfer():
     ebs = os.path.getmtime(r'\\sinsdn38.ap.infineon.com\BE_CLUSTER_PTE\04_Data_Management\09_Intern_Projects\Haikal Yusuf\Weekly Cerberus Check (Automated)\BATAM POB.csv')
 
     #Run the macro
-    os.startfile(r'C:\Users\MohamadYusuf\Desktop\Haikal\Personal Projects\cerberus-check\CerberusTransfer.xlsm')
+    #os.startfile(r'C:\Users\MohamadYusuf\Desktop\Haikal\Personal Projects\cerberus-check\CerberusTransfer.xlsm')
+    os.startfile(r"\\sinsdn38.ap.infineon.com\BE_CLUSTER_PTE\04_Data_Management\09_Intern_Projects\Haikal Yusuf\Weekly Cerberus Check (Automated)\CerberusTransfer.xlsm")
 
     #Holding loop to ensure that the macro completes before moving on to prevent the macros from overlapping
     while ebs == os.path.getmtime(r'\\sinsdn38.ap.infineon.com\BE_CLUSTER_PTE\04_Data_Management\09_Intern_Projects\Haikal Yusuf\Weekly Cerberus Check (Automated)\BATAM POB.csv'):
@@ -170,17 +171,17 @@ def copy_files(report, logweek):
     #with open('C:\\Users\\MohamadYusuf\\Desktop\\Haikal\\Personal Projects\\cerberus-check\\WCC (KT Report) - LW%s.txt' % (str(logweek),), 'w') as f:    
     with open('//sinsdn38.ap.infineon.com/BE_CLUSTER_PTE/04_Data_Management/09_Intern_Projects/Haikal Yusuf/Weekly Cerberus Check (Automated)/WCC (KT Report) - LW%s.txt' % (str(logweek),), 'w') as f:
         f.write(report)
-        
 
     # find the latest Cerberus Report txt file & copy it to the relevant folders
-    path = r"C:\Users\MohamadYusuf\Desktop\Haikal\Personal Projects\cerberus-check"
+    #path = r"C:\Users\MohamadYusuf\Desktop\Haikal\Personal Projects\cerberus-check"
+    path = r"\\sinsdn38.ap.infineon.com\BE_CLUSTER_PTE\04_Data_Management\09_Intern_Projects\Haikal Yusuf\Weekly Cerberus Check (Automated)"
     filename_cerb_report = latestFile(path)
     import shutil
     import os 
-    shutil.copy(filename_cerb_report, r"\\sinsdn38.ap.infineon.com\BE_CLUSTER_PTE\04_Data_Management\09_Intern_Projects\Haikal Yusuf\Weekly LRR Reports")
+    #shutil.copy(filename_cerb_report, r"\\sinsdn38.ap.infineon.com\BE_CLUSTER_PTE\04_Data_Management\09_Intern_Projects\Haikal Yusuf\Weekly LRR Reports")
+    # this was commented out because copying the Cerberus Report txt file will cause future runs of this program to fail (w.r.t line 195 where non-excel files can't be added)
 
     # find the latest Cerberus Report LW Compile & copy it to the relevant folders 
-
 
 
 # Main
@@ -189,22 +190,20 @@ def copy_files(report, logweek):
 #cerberusTransfer()
 
 # Section 2
-'''
 path = r'Z:\04_Data_Management\09_Intern_Projects\Haikal Yusuf\Weekly LRR Reports'
+# possible error in function latestFile is when non-excel files are added into the path above 
 filename = latestFile(path)
 print(filename)
 st = filename.split("\\")
 logweek = st[-1].split(" ")[0]
 logweek = int( logweek[2:] )
 print('LogWeek value is:', logweek)
-'''
+
 
 # Section 3
-#report = report_generator(logweek, filename)
+report = report_generator(logweek, filename)
 
 # Section 4
-report = "nothing much"
-logweek = 2107
 copy_files(report, logweek)
 
 #exit()
