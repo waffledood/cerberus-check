@@ -103,9 +103,8 @@ def tabulate(filename):
 
             import os 
             os.system('color')
-            
-            print("DSMAL LOH value is ", end='')
-            print('\x1b[6;30;42m' + str(dsmal_loh) + '\x1b[0m')
+            #print("DSMAL LOH value is ", end='')
+            #print('\x1b[6;30;42m' + str(dsmal_loh) + '\x1b[0m')
             
 
             segment_loh[i] = dsmal_loh

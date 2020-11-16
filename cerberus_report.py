@@ -64,6 +64,8 @@ def latestFile(path):
     # might also be useful: https://realpython.com/working-with-files-in-python/
     files = os.listdir(path)
     paths = [os.path.join(path, basename) for basename in files]
+    # adding an if condition to the list comprehension such that it checks for files that are of a certain extension type, 
+    # #@David Of course. Just insert if basename.endswith('.csv') into the list comprehension
     return max(paths, key=os.path.getctime)
 
 
@@ -116,6 +118,7 @@ def report_generator(logweek, filename):
             new_segment = cerb_name
         elif cerb_name == "TS":
             # we do not need to report on TS because the Ceberus data accounts for both "YES" & "NO" values for 100% Hold while Tableau data only accounts for "NO"
+            # & there isn't a way to filter out the lots with "NO" for 100% Hold
             #new_segment = cerb_name if lrr_diff < 0.50 or lrr_diff > 1 else new_segment
             pass
         else:
@@ -123,6 +126,7 @@ def report_generator(logweek, filename):
 
         if old_segment != new_segment:
             lrr_diff_str = '\x1b[0;30;41m' + str(lrr_diff) + '\x1b[0m'
+            new_segment = '\x1b[6;30;42m' + new_segment + '\x1b[0m'
             s = f"{new_segment}\'s values are outside of the acceptable range, {lrr_diff_str}%"
             old_segment = new_segment
             lrr_diff_list.append(new_segment)
@@ -152,23 +156,29 @@ def report_generator(logweek, filename):
     return report
 
 
-'''
-Section 4:
-    this section looks into saving the report as txt files with dynamic names, where each file's name includes the past 
-    LogWeek's value, e.g. LW2104. So file names should look like "KT Report LW2104.txt"
-
-    generic website: https://www.guru99.com/reading-and-writing-files-in-python.html
-    detailed answer on StackOverflow (not quite the answer i was looking for): https://stackoverflow.com/questions/47147653/write-to-files-with-dynamic-file-names
-    the accurate answer i was looking for! https://www.kite.com/python/answers/how-to-create-a-filename-using-variables-in-python
-
-    references:
-    - https://stackoverflow.com/questions/11178061/print-list-without-brackets-in-a-single-row
-'''
 
 def copy_files(report, logweek):
+    '''
+    Saves the Cerberus Report as a txt file to my network drive folder as well as other relevatnt folders
+
+    Parameters:
+        report (str): The report
+        logweek (int): The LogWeek the report was done for
+    
+    Returns:
+        None
+
+    References:
+        generic website: https://www.guru99.com/reading-and-writing-files-in-python.html
+        detailed answer on StackOverflow (not quite the answer i was looking for): https://stackoverflow.com/questions/47147653/write-to-files-with-dynamic-file-names
+        the accurate answer i was looking for! https://www.kite.com/python/answers/how-to-create-a-filename-using-variables-in-python
+        https://stackoverflow.com/questions/11178061/print-list-without-brackets-in-a-single-row
+
+    '''
 
     # saves the report as a txt file to my network drive folder
     #with open('C:\\Users\\MohamadYusuf\\Desktop\\Haikal\\Personal Projects\\cerberus-check\\WCC (KT Report) - LW%s.txt' % (str(logweek),), 'w') as f:    
+    # had troubles opening the UNC path with open(), refer to https://stackoverflow.com/questions/7169845/using-python-how-can-i-access-a-shared-folder-on-windows-network
     with open('//sinsdn38.ap.infineon.com/BE_CLUSTER_PTE/04_Data_Management/09_Intern_Projects/Haikal Yusuf/Weekly Cerberus Check (Automated)/WCC (KT Report) - LW%s.txt' % (str(logweek),), 'w') as f:
         f.write(report)
 
@@ -178,27 +188,27 @@ def copy_files(report, logweek):
     filename_cerb_report = latestFile(path)
     import shutil
     import os 
+    shutil.copy(filename_cerb_report, r"\\sinsdn38.ap.infineon.com\BE_CLUSTER_PTE\04_Data_Management\09_Intern_Projects\Haikal Yusuf\Weekly Cerberus Check (KT Report)")
     #shutil.copy(filename_cerb_report, r"\\sinsdn38.ap.infineon.com\BE_CLUSTER_PTE\04_Data_Management\09_Intern_Projects\Haikal Yusuf\Weekly LRR Reports")
-    # this was commented out because copying the Cerberus Report txt file will cause future runs of this program to fail (w.r.t line 195 where non-excel files can't be added)
-
+    # this was commented out because copying the Cerberus Report txt file will cause future runs of this program to fail (w.r.t line 206 where non-excel files can't be added)
+    
     # find the latest Cerberus Report LW Compile & copy it to the relevant folders 
 
 
-# Main
+''' Main '''
 
 # Section 1
 #cerberusTransfer()
 
 # Section 2
 path = r'Z:\04_Data_Management\09_Intern_Projects\Haikal Yusuf\Weekly LRR Reports'
-# possible error in function latestFile is when non-excel files are added into the path above 
+# possible error in function latestFile is when non-excel files are added into the folder in the path above 
 filename = latestFile(path)
 print(filename)
 st = filename.split("\\")
 logweek = st[-1].split(" ")[0]
 logweek = int( logweek[2:] )
 print('LogWeek value is:', logweek)
-
 
 # Section 3
 report = report_generator(logweek, filename)
