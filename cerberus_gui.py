@@ -6,17 +6,20 @@ def gui():
     sg.theme('GreenTan')    # Keep things interesting for your users
 
     layout = [[sg.Text('Automated Cerberus Check!')],      
-            [sg.Input(key='-IN-')],      
-            [sg.Checkbox('Cerberus Transfer', default=True, tooltip='')],
-            [sg.Checkbox('LW Query', default=True, tooltip='Check if you want to auto-query the latest LW')],
-            [sg.Button('Read'), sg.Exit()]]      
+             [sg.Checkbox('Cerberus Transfer', default=True, tooltip='')],
+             [sg.Checkbox('LW Query', default=True, tooltip='Check if you want to auto-query the latest LW')],
+             [sg.Text('LW to Query')],
+             [sg.Input(key='-IN-')],  
+             [sg.Button('Read'), sg.Exit()]]      
 
     window = sg.Window('Cerberus Check', layout)      
 
     while True:                             # The Event Loop
         event, values = window.read() 
         print(event, values)       
-        print(values)
+
+        if event == sg.WIN_CLOSED or event == 'Exit':
+            break   
 
         # boolean to track if Cerberus Macro is to be run
         a = values[0]
@@ -27,7 +30,7 @@ def gui():
         ''' Run Macro '''
         if a:
             cr.cerberusTransfer()
-        
+
         ''' Auto latest LW Query '''
         path = r'Z:\04_Data_Management\09_Intern_Projects\Haikal Yusuf\Weekly LRR Reports'
 
@@ -44,10 +47,12 @@ def gui():
         report = cr.report_generator(logweek=logweek, filename=filename)
         copy_files(report=report, logweek=logweek)
 
-        if event == sg.WIN_CLOSED or event == 'Exit':
-            break      
 
     window.close()
 
+def main():
+    gui()   
 
-gui()
+
+if __name__ == "__main__":
+    main()
