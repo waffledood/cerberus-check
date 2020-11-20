@@ -194,26 +194,38 @@ def copy_files(report, logweek):
     
     # find the latest Cerberus Report LW Compile & copy it to the relevant folders 
 
+def gui_run():
+    import PySimpleGUI as sg 
+
+    sg.theme('GreenTan')
+
+    layout = [
+        #
+    ]
 
 ''' Main '''
+def main(s1):
+    # Section 1
+    if s1:
+        cerberusTransfer()
 
-# Section 1
-#cerberusTransfer()
+    # Section 2
+    path = r'Z:\04_Data_Management\09_Intern_Projects\Haikal Yusuf\Weekly LRR Reports'
+    # possible error in function latestFile is when non-excel files are added into the folder in the path above 
+    filename = latestFile(path)
+    print(filename)
+    st = filename.split("\\")
+    logweek = st[-1].split(" ")[0]
+    logweek = int( logweek[2:] )
+    print('LogWeek value is:', logweek)
 
-# Section 2
-path = r'Z:\04_Data_Management\09_Intern_Projects\Haikal Yusuf\Weekly LRR Reports'
-# possible error in function latestFile is when non-excel files are added into the folder in the path above 
-filename = latestFile(path)
-print(filename)
-st = filename.split("\\")
-logweek = st[-1].split(" ")[0]
-logweek = int( logweek[2:] )
-print('LogWeek value is:', logweek)
+    # Section 3
+    report = report_generator(logweek, filename)
 
-# Section 3
-report = report_generator(logweek, filename)
+    # Section 4
+    copy_files(report, logweek)
 
-# Section 4
-copy_files(report, logweek)
+    #exit()
 
-#exit()
+if __name__ == "__main__":
+    main(s1=False)
