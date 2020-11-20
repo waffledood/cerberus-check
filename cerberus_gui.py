@@ -3,16 +3,15 @@ def gui():
     import PySimpleGUI as sg 
     import cerberus_report as cr
 
+    # Main GUI Window
     sg.theme('GreenTan')   
-
     layout = [[sg.Text('Automated Cerberus Check!')],      
              [sg.Checkbox('Cerberus Transfer', default=True, tooltip='')],
              [sg.Checkbox('LW Query', default=True, tooltip='Check if you want to auto-query the latest LW')],
              [sg.Text('LW to Query')],
              [sg.Input(key='-IN-')],  
              [sg.Button('Read'), sg.Exit()]]      
-
-    window = sg.Window('Cerberus Check', layout)      
+    window = sg.Window('Cerberus Check', layout)   
 
     # The Event Loop
     while True:                             
@@ -21,6 +20,11 @@ def gui():
 
         if event == sg.WIN_CLOSED or event == 'Exit':
             break   
+        
+        # GUI Window for Progress   
+        layout_progress = [[sg.Text('Automated Cerberus Check completed!')]]
+        window_progress = sg.Window('In Progress', layout_progress)
+        window_progress.read()
 
         # boolean to track if Cerberus Macro is to be run
         a = values[0]
@@ -42,12 +46,18 @@ def gui():
             logweek = int( logweek[2:] )
         else:
             cr.find_file(path=path, logweek=logweek)
-            # filename = function1(path)
-            # new function that reads path & finds the path of the file with the 
             logweek = values['-IN-'] #find from values what user typed in for LW
 
         report = cr.report_generator(logweek=logweek, filename=filename)
-        copy_files(report=report, logweek=logweek)
+        cr.copy_files(report=report, logweek=logweek)
+
+        # Close the GUI Window for Progress
+        window_progress.close()
+
+        # A GUI Window for completed task
+        layout_done = [[sg.Text('Automated Cerberus Check completed!')]]
+        window_done = sg.Window('Done!', layout_done)
+        window_done.read()
 
     window.close()
 

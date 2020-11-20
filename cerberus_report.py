@@ -136,8 +136,8 @@ def report_generator(logweek, filename):
 
         if old_segment != new_segment:
             lrr_diff_str = '\x1b[0;30;41m' + str(lrr_diff) + '\x1b[0m'
-            new_segment = '\x1b[6;30;42m' + new_segment + '\x1b[0m'
-            s = f"{new_segment}\'s values are outside of the acceptable range, {lrr_diff_str}%"
+            new_segment_str = '\x1b[6;30;42m' + new_segment + '\x1b[0m'
+            s = f"{new_segment_str}\'s values are outside of the acceptable range, {lrr_diff_str}%"
             old_segment = new_segment
             lrr_diff_list.append(new_segment)
             lrr_diff_list_full.append([new_segment, lrr_diff, cerb, tab])
@@ -169,7 +169,7 @@ def report_generator(logweek, filename):
 
 def copy_files(report, logweek):
     '''
-    Saves the Cerberus Report as a txt file to my network drive folder as well as other relevatnt folders
+    Saves the Cerberus Report as a txt file to my network drive folder as well as other relevant folders
 
     Parameters:
         report (str): The report
