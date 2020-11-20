@@ -48,8 +48,10 @@ def gui():
             logweek = st[-1].split(" ")[0]
             logweek = int( logweek[2:] )
         else:
-            cr.find_file(path=path, logweek=logweek)
             logweek = values['-IN-'] #find from values what user typed in for LW
+            logweek = int(logweek)
+            filename = cr.find_file(path=path, logweek=logweek)
+            print("The filename is:", filename)
 
         report = cr.report_generator(logweek=logweek, filename=filename)
         cr.copy_files(report=report, logweek=logweek)
