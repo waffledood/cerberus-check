@@ -16,10 +16,11 @@ def gui():
     # The Event Loop
     while True:                             
         event, values = window.read() 
-        print(event, values)       
 
         if event == sg.WIN_CLOSED or event == 'Exit':
             break   
+
+        print(event, values)
         
         # GUI Window for Progress   
         layout_progress = [[sg.Text('Automated Cerberus Check completed!')]]
