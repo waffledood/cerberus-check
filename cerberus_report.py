@@ -194,16 +194,9 @@ def copy_files(report, logweek):
     
     # find the latest Cerberus Report LW Compile & copy it to the relevant folders 
 
-def gui_run():
-    import PySimpleGUI as sg 
-
-    sg.theme('GreenTan')
-
-    layout = [
-        #
-    ]
 
 ''' Main '''
+'''
 def main(s1):
     # Section 1
     if s1:
@@ -229,3 +222,4 @@ def main(s1):
 
 if __name__ == "__main__":
     main(s1=False)
+'''
