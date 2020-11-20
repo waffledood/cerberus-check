@@ -6,7 +6,7 @@ def gui():
     # Main GUI Window
     sg.theme('GreenTan')   
     layout = [[sg.Text('Automated Cerberus Check!')],      
-             [sg.Checkbox('Cerberus Transfer', default=True, tooltip='')],
+             [sg.Checkbox('Cerberus Transfer', default=True, tooltip='Check if you want to extract the latest Tableau data')],
              [sg.Checkbox('LW Query', default=True, tooltip='Check if you want to auto-query the latest LW')],
              [sg.Text('LW to Query')],
              [sg.Input(key='-IN-')],  
@@ -23,7 +23,7 @@ def gui():
         print(event, values)
         
         # GUI Window for Progress   
-        layout_progress = [[sg.Text('Automated Cerberus Check completed!')]]
+        layout_progress = [[sg.Text('Automated Cerberus Check underway ...')]]
         window_progress = sg.Window('In Progress', layout_progress)
         # the read() method will keep the pop-up window active & wait for inputs.
         # basically, the code stops here & waits for inputs into 
@@ -65,6 +65,13 @@ def gui():
         window_done.read()
 
     window.close()
+
+    ''' references:
+        https://opensource.com/article/18/8/pysimplegui
+        https://pysimplegui.readthedocs.io/en/latest/cookbook/
+        https://pysimplegui.readthedocs.io/en/latest/call%20reference/#checkbox-element
+        
+    '''
 
 def main():
     gui()   
