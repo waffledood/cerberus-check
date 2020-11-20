@@ -69,6 +69,16 @@ def latestFile(path):
     return max(paths, key=os.path.getctime)
 
 
+def find_file(path, logweek):
+    files = os.listdir(path)
+    paths = [os.path.join(path, basename) for basename in files]
+
+    for item in paths:
+        if str(logweek) in item:
+            return item 
+    
+    return "" 
+
 def report_generator(logweek, filename):
     '''
     Runs the modules that extract the LOH, TTL & LRR values from the Cerberus & Tableau dataset.

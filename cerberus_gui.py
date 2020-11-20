@@ -3,7 +3,7 @@ def gui():
     import PySimpleGUI as sg 
     import cerberus_report as cr
 
-    sg.theme('GreenTan')    # Keep things interesting for your users
+    sg.theme('GreenTan')   
 
     layout = [[sg.Text('Automated Cerberus Check!')],      
              [sg.Checkbox('Cerberus Transfer', default=True, tooltip='')],
@@ -14,7 +14,8 @@ def gui():
 
     window = sg.Window('Cerberus Check', layout)      
 
-    while True:                             # The Event Loop
+    # The Event Loop
+    while True:                             
         event, values = window.read() 
         print(event, values)       
 
@@ -32,7 +33,7 @@ def gui():
             cr.cerberusTransfer()
 
         ''' Auto latest LW Query '''
-        path = r'Z:\04_Data_Management\09_Intern_Projects\Haikal Yusuf\Weekly LRR Reports'
+        path = r'\\sinsdn38.ap.infineon.com\BE_CLUSTER_PTE\04_Data_Management\09_Intern_Projects\Haikal Yusuf\Weekly LRR Reports'
 
         if b:
             filename = cr.latestFile(path)
@@ -40,13 +41,13 @@ def gui():
             logweek = st[-1].split(" ")[0]
             logweek = int( logweek[2:] )
         else:
+            cr.find_file(path=path, logweek=logweek)
             # filename = function1(path)
             # new function that reads path & finds the path of the file with the 
-            logweek = values #find from values what user typed in for LW
+            logweek = values['-IN-'] #find from values what user typed in for LW
 
         report = cr.report_generator(logweek=logweek, filename=filename)
         copy_files(report=report, logweek=logweek)
-
 
     window.close()
 
