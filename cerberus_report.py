@@ -64,6 +64,9 @@ def latestFile(path):
     # might also be useful: https://realpython.com/working-with-files-in-python/
     files = os.listdir(path)
     paths = [os.path.join(path, basename) for basename in files]
+
+    # consider adding if basename.endswith('.xls') into the list comprehension
+
     # adding an if condition to the list comprehension such that it checks for files that are of a certain extension type, 
     # #@David Of course. Just insert if basename.endswith('.csv') into the list comprehension
     return max(paths, key=os.path.getctime)

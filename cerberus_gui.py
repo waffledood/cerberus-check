@@ -25,6 +25,8 @@ def gui():
         # GUI Window for Progress   
         layout_progress = [[sg.Text('Automated Cerberus Check completed!')]]
         window_progress = sg.Window('In Progress', layout_progress)
+        # the read() method will keep the pop-up window active & wait for inputs.
+        # basically, the code stops here & waits for inputs into 
         window_progress.read()
 
         # boolean to track if Cerberus Macro is to be run
