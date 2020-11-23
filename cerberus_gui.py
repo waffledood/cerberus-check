@@ -15,23 +15,34 @@ def gui():
 
              [sg.Text('LW to Query')],
              [sg.Input(key='-IN-')],  
-             [sg.Button('Read'), sg.Exit()]]      
+             [sg.Button('Read'), sg.Exit()]]
+
     window = sg.Window('Cerberus Check', layout)   
 
     # The Event Loop
-    while True:                             
+    while True:  
+        
         event, values = window.read() 
 
-        if event == sg.WIN_CLOSED or event == 'Exit':
-            break   
+        # holding while loop to check if input is empty for "LW to Query"
+        while not values['-IN-'] and not values[1]:
+            event, values = window.read() 
 
-        print(event, values)
-        
+            '''
+            if event == sg.WIN_CLOSED or event == 'Exit':
+                break   
+            '''
+
+            print(event, values)
+
+        if event == sg.WIN_CLOSED or event == 'Exit':
+            break 
+
         # GUI Window for Progress   
         layout_progress = [[sg.Text('Automated Cerberus Check underway ...')]]
         window_progress = sg.Window('In Progress', layout_progress)
         # the read() method will keep the pop-up window active & wait for inputs.
-        # basically, the code stops here & waits for inputs into 
+        # basically, the code stops here & waits for inputs 
         window_progress.read()
 
         # boolean to track if Cerberus Macro is to be run
@@ -72,7 +83,6 @@ def gui():
             import os
             path = r"\\sinsdn38.ap.infineon.com\BE_CLUSTER_PTE\04_Data_Management\09_Intern_Projects\Haikal Yusuf\Weekly Cerberus Check (KT Report)"
             filename = cr.latestFile(path)
-            #os.open(filename, os.O_RDONLY)
             os.startfile(filename)
 
         # Close the GUI Window for Progress
