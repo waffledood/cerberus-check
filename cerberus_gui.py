@@ -11,6 +11,7 @@ def gui():
              [sg.Checkbox('Cerberus Transfer', default=True, tooltip='Check if you want to extract the latest Tableau data')],
              [sg.Checkbox('LW Query', default=True, tooltip='Check if you want to auto-query the latest LW')],
              [sg.Checkbox('Generate & save report', default=True, tooltip='Check if you want to generate & save the report')],
+             [sg.Checkbox('Open report after completion', default=True, tooltip='Check if you want to open the report')],
 
              [sg.Text('LW to Query')],
              [sg.Input(key='-IN-')],  
@@ -39,6 +40,12 @@ def gui():
         # boolean to track if auto query for most recent LW is to be done
         b = values[1]
 
+        # boolean to track if report is to be generated & saved
+        c = values[2]
+
+        # boolean to track if report is to be opened
+        d = values[3]
+
         ''' Run Macro '''
         if a:
             cr.cerberusTransfer()
@@ -57,8 +64,16 @@ def gui():
             filename = cr.find_file(path=path, logweek=logweek)
             print("The filename is:", filename)
 
-        report = cr.report_generator(logweek=logweek, filename=filename)
-        cr.copy_files(report=report, logweek=logweek)
+        if c:
+            report = cr.report_generator(logweek=logweek, filename=filename)
+            cr.copy_files(report=report, logweek=logweek)
+
+        if d:
+            import os
+            path = r"\\sinsdn38.ap.infineon.com\BE_CLUSTER_PTE\04_Data_Management\09_Intern_Projects\Haikal Yusuf\Weekly Cerberus Check (KT Report)"
+            filename = cr.latestFile(path)
+            #os.open(filename, os.O_RDONLY)
+            os.startfile(filename)
 
         # Close the GUI Window for Progress
         window_progress.close()
