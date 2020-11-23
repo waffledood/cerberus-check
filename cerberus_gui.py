@@ -6,8 +6,12 @@ def gui():
     # Main GUI Window
     sg.theme('GreenTan')   
     layout = [[sg.Text('Automated Cerberus Check!')],      
+             
+             # checkboxes for certain functionalities of the program 
              [sg.Checkbox('Cerberus Transfer', default=True, tooltip='Check if you want to extract the latest Tableau data')],
              [sg.Checkbox('LW Query', default=True, tooltip='Check if you want to auto-query the latest LW')],
+             [sg.Checkbox('Generate & save report', default=True, tooltip='Check if you want to generate & save the report')],
+
              [sg.Text('LW to Query')],
              [sg.Input(key='-IN-')],  
              [sg.Button('Read'), sg.Exit()]]      
