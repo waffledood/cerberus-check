@@ -65,6 +65,8 @@ def gui():
         ''' Auto latest LW Query '''
         path = r'\\sinsdn38.ap.infineon.com\BE_CLUSTER_PTE\04_Data_Management\09_Intern_Projects\Haikal Yusuf\Weekly LRR Reports'
 
+        filename = ""
+
         if b:
             filename = cr.latestFile(path)
             st = filename.split("\\")
@@ -73,6 +75,7 @@ def gui():
         else:
             logweek = values['-IN-'] #find from values what user typed in for LW
             logweek = int(logweek)
+            # buggy! doesn't work when other logweek values are inputted & checkboxes for 
             filename = cr.find_file(path=path, logweek=logweek)
             print("The filename is:", filename)
 
@@ -83,7 +86,11 @@ def gui():
         if d:
             import os
             path = r"\\sinsdn38.ap.infineon.com\BE_CLUSTER_PTE\04_Data_Management\09_Intern_Projects\Haikal Yusuf\Weekly Cerberus Check (KT Report)"
-            filename = cr.latestFile(path)
+            if b:
+                filename = cr.latestFile(path)
+            else:
+                path = r"\\sinsdn38.ap.infineon.com\BE_CLUSTER_PTE\04_Data_Management\09_Intern_Projects\Haikal Yusuf\Weekly Cerberus Check (KT Report)"
+                filename = cr.find_file(path=path, logweek=logweek)
             os.startfile(filename)
 
         # Close the GUI Window for Progress
