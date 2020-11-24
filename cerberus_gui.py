@@ -23,20 +23,21 @@ def gui():
     while True:  
         
         event, values = window.read() 
+        if event == sg.WIN_CLOSED or event == 'Exit':
+            break 
+
+        print(event, values)
 
         # holding while loop to check if input is empty for "LW to Query"
+        '''
         while not values['-IN-'] and not values[1]:
             event, values = window.read() 
-
-            '''
-            if event == sg.WIN_CLOSED or event == 'Exit':
-                break   
-            '''
 
             print(event, values)
 
         if event == sg.WIN_CLOSED or event == 'Exit':
             break 
+        '''
 
         # GUI Window for Progress   
         layout_progress = [[sg.Text('Automated Cerberus Check underway ...')]]
