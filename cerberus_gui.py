@@ -28,17 +28,6 @@ def gui():
 
         print(event, values)
 
-        # holding while loop to check if input is empty for "LW to Query"
-        '''
-        while not values['-IN-'] and not values[1]:
-            event, values = window.read() 
-
-            print(event, values)
-
-        if event == sg.WIN_CLOSED or event == 'Exit':
-            break 
-        '''
-
         # GUI Window for Progress   
         layout_progress = [[sg.Text('Automated Cerberus Check underway ...')]]
         window_progress = sg.Window('In Progress', layout_progress)
@@ -47,50 +36,48 @@ def gui():
         window_progress.read()
 
         # boolean to track if Cerberus Macro is to be run
-        a = values[0]
+        bool_CerberusMacro = values[0]
 
         # boolean to track if auto query for most recent LW is to be done
-        b = values[1]
+        bool_RecentLW = values[1]
 
         # boolean to track if report is to be generated & saved
-        c = values[2]
+        bool_GenerateAndSaveReport = values[2]
 
         # boolean to track if report is to be opened
-        d = values[3]
+        bool_OpenReport = values[3]
+
+        # Path containing Weekly Cerberus Data
+        path_CerberusData = r'\\sinsdn38.ap.infineon.com\BE_CLUSTER_PTE\04_Data_Management\09_Intern_Projects\Haikal Yusuf\Weekly LRR Reports'
+        # Path containing Weekly Cerberus Reports
+        path_CerberusReport = r"\\sinsdn38.ap.infineon.com\BE_CLUSTER_PTE\04_Data_Management\09_Intern_Projects\Haikal Yusuf\Weekly Cerberus Check (KT Report)"
 
         ''' Run Macro '''
-        if a:
+        if bool_CerberusMacro:
             cr.cerberusTransfer()
 
-        ''' Auto latest LW Query '''
-        path = r'\\sinsdn38.ap.infineon.com\BE_CLUSTER_PTE\04_Data_Management\09_Intern_Projects\Haikal Yusuf\Weekly LRR Reports'
-
-        filename = ""
-
-        if b:
-            filename = cr.latestFile(path)
+        if bool_RecentLW:
+            filename = cr.latestFile(path_CerberusData)
             st = filename.split("\\")
             logweek = st[-1].split(" ")[0]
             logweek = int( logweek[2:] )
         else:
             logweek = values['-IN-'] #find from values what user typed in for LW
             logweek = int(logweek)
-            # buggy! doesn't work when other logweek values are inputted & checkboxes for 
-            filename = cr.find_file(path=path, logweek=logweek)
+            
+            filename = cr.find_file(path=path_CerberusData, logweek=logweek)
             print("The filename is:", filename)
 
-        if c:
+        if bool_GenerateAndSaveReport and bool_RecentLW:
             report = cr.report_generator(logweek=logweek, filename=filename)
             cr.copy_files(report=report, logweek=logweek)
 
-        if d:
+        if bool_OpenReport:
             import os
-            path = r"\\sinsdn38.ap.infineon.com\BE_CLUSTER_PTE\04_Data_Management\09_Intern_Projects\Haikal Yusuf\Weekly Cerberus Check (KT Report)"
-            if b:
-                filename = cr.latestFile(path)
+            if bool_RecentLW:
+                filename = cr.latestFile(path_CerberusReport)
             else:
-                path = r"\\sinsdn38.ap.infineon.com\BE_CLUSTER_PTE\04_Data_Management\09_Intern_Projects\Haikal Yusuf\Weekly Cerberus Check (KT Report)"
-                filename = cr.find_file(path=path, logweek=logweek)
+                filename = cr.find_file(path=path_CerberusReport, logweek=logweek)
             os.startfile(filename)
 
         # Close the GUI Window for Progress
