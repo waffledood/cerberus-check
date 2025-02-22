@@ -19,24 +19,3 @@ Process:
 3. Comparison is made between the values of "Sum LOH" & "Total Lot Count" to check the data sanity. 
 * Compare the LOH, TTL & LRR% values for each segment & correspondingly generate a report if the LRR% are within an acceptable range
 - cerberus_report.py
-
-
-Future areas of improvement:
-1. ~~Filtering out the data in the pre-processing stage to reduce the size of the dataset (perhaps filtering out LW's before 2010). This would require separate VBA / Python scripts.~~ (Done)
-2. ~~Converting the Excel worksheet to CSV format, to improve the time the Python script takes to read.~~ (Done)
-3. ~~Add extra filters for DS MAL & SIN TS segments~~ (Done)
-4. ~~Further develop CerberusCheck.py (which reads the Excel data exported by Cerberus)~~ (Done)
-
-
-Decided course of action:
-1. ~~Extract each DDM_FINAL Worksheet from each Segment's Masterfile Workbook as a CSV file (csv_export.vb)~~. (Done)
-2. ~~Calculate the LOH & TTL count from each Segment's CSV file (cerberus_v2.py)~~. (Done)
-
-
-Things to work on:
-1. ~~Add a filter for "100% Hold Condition" to keep NULL & NO for TS SIN, in cerberus_v2.py~~ (Done)
-2. ~~Adjust LOH value for DSMAL Tableau~~ (Done)
-
-Notes:
-- cerberusCheck.py developed to **filter the data extracted from Cerberus**
-- 
